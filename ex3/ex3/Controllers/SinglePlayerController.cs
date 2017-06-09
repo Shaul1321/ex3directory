@@ -13,7 +13,7 @@ namespace ex3.Controllers
 {
     public class SinglePlayerController : ApiController
     {
-        private IModel mazeModel = new MyModel();
+        static private IModel mazeModel = new MyModel();
         //public IModel MazeModel { get => mazeModel; set => mazeModel = value; }
 
         // GET: api/SinglePlayer
@@ -23,9 +23,13 @@ namespace ex3.Controllers
         }
 
         // GET: api/SinglePlayer/5
-        public string Get(int id)
+        [Route("api/SinglePlayer/{name}/{algorithm}")]
+        [HttpGet]
+        public JObject Solve(string name, int algorithm)
         {
-            return "value";
+            string solutionJson = mazeModel.Solve(name, algorithm);
+            JObject mazeObj = JObject.Parse(solutionJson);
+            return mazeObj;
         }
 
         // POST: api/SinglePlayer
@@ -33,8 +37,8 @@ namespace ex3.Controllers
         [HttpPost]
         public JObject GenerataMaze(string name, int rows, int cols)
         {
-            string MazeJson = mazeModel.GenerateMaze(name, rows, cols);
-            JObject mazeObj = JObject.Parse(MazeJson);
+            string mazeJson = mazeModel.GenerateMaze(name, rows, cols);
+            JObject mazeObj = JObject.Parse(mazeJson);
             return mazeObj;            
         }
 
