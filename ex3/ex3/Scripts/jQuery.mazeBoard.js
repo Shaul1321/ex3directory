@@ -7,8 +7,10 @@
        
         var rows = mazeData.length;
         var cols = mazeData[0].length;
-        var cellWidth = this.width / cols;
-        var cellHeight = this.height / rows;
+        var cellWidth = this.element.width / cols;
+        var cellHeight = this.element.height / rows;
+        console.log(cellWidth);
+        console.log(cellHeight);
         for (var i = 0; i < rows; i++) {
             for (var j = 0; j < cols; j++) {
                 if (mazeData[i][j] == 1) {
