@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+//using MazeGeneratorLib;
+//using MazeLib;
+//using MazeServiceModel;
+using MazeServiceModel.Model;
+using Newtonsoft.Json;
 using MazeGeneratorLib;
 using MazeLib;
-using MazeServiceModel;
-using MazeServiceModel.Model;
+using Newtonsoft.Json.Linq;
 
 namespace ex3.Controllers
 {
     public class SinglePlayerController : ApiController
     {
-        IModel mazeModel;
+        private IModel mazeModel = new MyModel();
+        //public IModel MazeModel { get => mazeModel; set => mazeModel = value; }
 
         // GET: api/SinglePlayer
         public IEnumerable<string> Get()
@@ -24,8 +29,13 @@ namespace ex3.Controllers
         }
 
         // POST: api/SinglePlayer
-        public void Post([FromBody]string value)
+        [Route("api/SinglePlayer/{name}/{rows}/{cols}")]
+        [HttpPost]
+        public JObject GenerataMaze(string name, int rows, int cols)
         {
+            string MazeJson = mazeModel.GenerateMaze(name, rows, cols);
+            JObject mazeObj = JObject.Parse(MazeJson);
+            return mazeObj;            
         }
 
         // PUT: api/SinglePlayer/5

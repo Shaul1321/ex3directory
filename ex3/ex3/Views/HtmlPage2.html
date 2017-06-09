@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>This is a dynamic page</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <button id="btn1">Click me</button>
+    <p id="p1"></p>
+    <script>
+            var i = 0;
+            var btn1 = document.getElementById("btn1");
+            btn1.onclick = function () {
+                i++;
+
+            var p1 = document.getElementById("p1");
+            p1.innerHTML = "Button was clicked";
+            console.log("hello "+i);
+         };
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿body {
+    background-color: white; 
+}
+
+#main #logo {
+    float: right;
+    width: 18%;
+    height: 10%;
+    margin-top: 30px;
+}
+
+h1{
+
+    font-size: xx-large;
+}
+
+#main {
+    background-color: #F0FFFF;
+    margin: 0 auto;
+    font-family: Century Gothic;
+    width: 800px;
+}
+
+#learn {
+    width: 6em;
+    position: center;
+    background-color:  #87CEFA;
+    border: 1px solid #87CEFA;
+    word-wrap: break-word;
+}
+
