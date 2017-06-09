@@ -17,6 +17,7 @@ namespace ex3.Controllers
         //public IModel MazeModel { get => mazeModel; set => mazeModel = value; }
 
         // GET: api/SinglePlayer
+        [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

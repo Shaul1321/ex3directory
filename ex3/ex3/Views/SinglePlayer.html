@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title of the document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <h1 id="headline"> Single Player</h1>
+    <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
+
+    <script src="../Scripts/jQuery.mazeBoard.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+            $.getJSON("http://localhost:4714/api/SinglePlayer").done(function (data) {
+                console.log(data);
+            })
+
+            var apiuri = "http://localhost:4714/api/SinglePlayer/mymaze/10/10"
+            $.post(apiuri).done(function (mazeJson) {
+                var mazeString = mazeJson.Maze;
+                var rows = mazeJson.Rows;
+                var cols = mazeJson.Cols;
+                var mazeArray = new Array(rows);
+                for (var i = 0; i < rows; i++) {
+                    mazeArray[i] = new Array(cols);
+                }
+
+                //fill maze board array
+                for (var i = 0; i < rows; i++) {
+                    for (var j = 0; j < cols; j++) {
+                        mazeArray[i][j] = 1;
+                        if (mazeString[i * rows + j] == '0') {
+                            mazeArray[i][j] = 0;
+                        }
+                    }
+                }
+                $("#myCanvas").drawMaze(mazeArray);
+            });
+
+
+            var maze = [[0, 1, 0, 1, 0], [0, 1, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 0, 0, 0]];
+        })
+    </script>
+
+</body>
+
+</html>
