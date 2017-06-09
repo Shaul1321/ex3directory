@@ -23,7 +23,7 @@ namespace ex3.Controllers
         }
 
         // GET: api/SinglePlayer/5
-        [Route("api/SinglePlayer/{name}/{algorithm}")]
+        [Route("api/SinglePlayer/{name}/{algorithm}/")]
         [HttpGet]
         public JObject Solve(string name, int algorithm)
         {
@@ -34,8 +34,9 @@ namespace ex3.Controllers
 
         // POST: api/SinglePlayer
         [Route("api/SinglePlayer/{name}/{rows}/{cols}")]
+        //[Route("api/SinglePlayer/GenerataMazePost")]
         [HttpPost]
-        public JObject GenerataMaze(string name, int rows, int cols)
+        public JObject GenerataMazePost(string name, int rows, int cols)
         {
             string mazeJson = mazeModel.GenerateMaze(name, rows, cols);
             JObject mazeObj = JObject.Parse(mazeJson);

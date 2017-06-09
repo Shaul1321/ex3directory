@@ -1,22 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>This is a dynamic page</title>
-    <meta charset="utf-8" />
-</head>
-<body>
-    <button id="btn1">Click me</button>
-    <p id="p1"></p>
+    <meta charset="UTF-8">
+    <title>Title of the document</title>
+    <link rel="import" href="/Views/HtmlPage5.html">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script>
-            var i = 0;
-            var btn1 = document.getElementById("btn1");
-            btn1.onclick = function () {
-                i++;
+    </script> 
+</head>
 
-            var p1 = document.getElementById("p1");
-            p1.innerHTML = "Button was clicked";
-            console.log("hello "+i);
-         };
+<body>
+    <canvas id="myCanvas" width="400" height="400"  style="border:1px solid #000000;"></canvas>
+
+
+    <div id="includedContent">
+        <div class="page1"></div>
+        <div class="page2"></div>
+        <div class="page3"></div>
+    </div>
+
+    <script src="../Scripts/jQuery.mazeBoard.js"></script>
+    <script>
+        $(document).ready(function () {
+          var maze = [[0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0],[0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0],[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]];
+          $("#myCanvas").drawMaze(maze);
+        })
     </script>
+
 </body>
+
 </html>

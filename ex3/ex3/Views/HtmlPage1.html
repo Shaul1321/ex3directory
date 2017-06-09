@@ -4,18 +4,29 @@
 	<meta charset="utf-8" />
 	<title>The Maze Project</title>
     <link href="StyleSheet1.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-3.1.1.js"></script>
+    <link rel="import" href="/Views/HtmlPage5.html">
+
 </head>
+
 <body>
+    <div id="menuBar" > </div>
+
     <div id="main">
         <h1 id="bla">  Maze Game</h1>
         <p>
             Play the original maze game for free.
-            <a href="HtmlPage2.html">This is a link</a>
         </p>
 
         <p id="learn">Learn more.</p>
     </div>
-    <img src="mazeIcon.png" id="logo" alt="logo" />
+    
+    <script>
+
+        $(function () {
+            $("#menuBar").load("/Views/HtmlPage4.html");
+        });
+    </script>
     
 </body>
 </html>
