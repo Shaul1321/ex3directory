@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title of the document</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> 
 
 </head>
 
@@ -12,18 +15,93 @@
     <h1 id="headline"> Single Player</h1>
     <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
 
-    <script src="../Scripts/jQuery.mazeBoard.js"></script>
-    <script>
 
 
+    <div class="col-xs-4">
+        <div class="form-group">
+            <label for="example-text-input" class="col-2 col-form-label">Name</label>
+            <div class="col-10">
+                <input class="form-control" type="text" value="myMaze" id="mazeName">
+            </div>
+
+            <label for="example-email-input" class="col-2 col-form-label">Rows</label>
+            <div class="col-10">
+                <input class="form-control" type="number" value="10" id="mazeCols">
+            </div>
+
+            <label for="example-email-input" class="col-2 col-form-label">Cols</label>
+            <div class="col-10">
+                <input class="form-control" type="number" value="10" id="mazeCols">
+            </div>
+
+            <div class="dropdown">
+                <a class="dropdown-toggle btn" data-toggle="dropdown" href="#">Dropdown trigger</a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <li>Item One</li>
+                    <li>Item Two</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- 
+        <div class="form-group">
+
+        </div>
+        <div class="form-group">
+            <label for="example-email-input" class="col-2 col-form-label">Cols</label>
+            <div class="col-10">
+                <input class="form-control" type="number" value="10" id="mazeCols">
+            </div>
+
+
+            <div class="dropdown">
+                <a class="dropdown-toggle btn" data-toggle="dropdown" href="#">Dropdown trigger</a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <li>Item One</li>
+                    <li>Item Two</li>
+                </ul>
+            </div>
+
+        </div>
+                        -->
+    </div>
+
+        <!--
+        <script src="../Scripts/jQuery.mazeBoard.js"></script>-->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
+        <script>
+
+        /*
         $(document).ready(function () {
+
+            var img = new Image();
+            img.onload = function () {
+                alert("image is loaded");
+                $(img).appendTo('body');
+            }
+            //img.src = "http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg";
+            img.src = "../Views/mazeIcon.png";
+
+
+
+
+
+
+
+
+
             $.getJSON("http://localhost:4714/api/SinglePlayer").done(function (data) {
                 console.log(data);
             })
 
-            var apiuri = "http://localhost:4714/api/SinglePlayer/mymaze/10/10"
+            //send asynchronous ajax post request for a maze
+
+            var apiuri = "http://localhost:4714/api/SinglePlayer/mymaze/15/15"
             $.post(apiuri).done(function (mazeJson) {
+
+                //when done load the maze propertieis from the json
                 var mazeString = mazeJson.Maze;
+                console.log("json: " + mazeString);
                 var rows = mazeJson.Rows;
                 var cols = mazeJson.Cols;
                 var mazeArray = new Array(rows);
@@ -40,13 +118,18 @@
                         }
                     }
                 }
+
+                //update the board
                 $("#myCanvas").drawMaze(mazeArray);
             });
 
 
+
             var maze = [[0, 1, 0, 1, 0], [0, 1, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 0, 0, 0]];
         })
-    </script>
+        */
+        </script>
+
 
 </body>
 

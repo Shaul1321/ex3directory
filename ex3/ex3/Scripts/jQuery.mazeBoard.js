@@ -1,10 +1,13 @@
 ﻿(function ($) {
     $.fn.drawMaze = function (mazeData, startRow, startCol
         , exitRow, exitCol, playerImage, exitImage, enabled, callBack) {
+        var img = new Image();
+        //img.src = "http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg";
+        img.src = "../Views/icon.png";
 
         this.element = $(this)[0];
         var context = this.element.getContext("2d");
-       
+
         var rows = mazeData.length;
         var cols = mazeData[0].length;
         var cellWidth = this.element.width / cols;
@@ -21,6 +24,15 @@
                 }
             }
         }
+
+
+        //context.drawImage("..\Views\mazeIcon.png", 100, 100);
+        
+
+        img.onload = function () {
+            context.drawImage(img, 50, 50, cellWidth, cellHeight);
+        }
+
         return this;
     }
     })(jQuery);
