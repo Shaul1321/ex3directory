@@ -88,7 +88,7 @@
 
         function startGame() {
                 $('#btnStart').addClass('disabled');
-
+                $('#btnSolve').removeClass('disabled');
                 var rows = $("#mazeRows").val();
                 var cols = $("#mazeCols").val();
                 var mazeName = $("#mazeName").val();
@@ -160,7 +160,7 @@
     </script>
     <script> 
             $(document).ready(function () {
-
+                $('#btnSolve').addClass('disabled');
                 /*
                 var img = new Image();
                 img.onload = function () {
