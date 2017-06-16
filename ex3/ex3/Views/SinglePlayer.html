@@ -9,7 +9,7 @@
     <script src="../Scripts/jQuery.mazeBoard.js"></script>
 </head>
 
-<body onkeypress="myFunction(event)">
+<body>
 
     <div id="menuBar"> </div>
     <h1 id="headline">   Single Player</h1>
@@ -36,7 +36,7 @@
                 <br />
                 <div>
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
+                        <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
                     </span>
                 </div>
 
@@ -64,7 +64,9 @@
     </script>
 
     <script>
-            function startGame() {
+        function startGame() {
+                $('#btnStart').addClass('disabled');
+
                 var rows = $("#mazeRows").val();
                 var cols = $("#mazeCols").val();
                 var mazeName = $("#mazeName").val();
@@ -93,7 +95,8 @@
                     }
 
                     //update the board
-                    var board = $("#myCanvas").mazeBoard(mazeArray);
+                    var board = $("#myCanvas").initialize(mazeArray);
+                    var board = $("#myCanvas").drawMaze();
                     console.log(board);
                 });
             }
@@ -102,7 +105,7 @@
 
             function myFunction(event) {
                 var x = event.which || event.keyCode;
-                alert(x);
+                //alert(x);
             }
 
             $(document).keydown(function (e) {
