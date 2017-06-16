@@ -51,7 +51,7 @@
                 <br />
                 <div>
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">Start Game</button>
+                        <button id="btnSolve" class="btn btn-primary" type="button" onclick="solveGame()">Solve</button>
                     </span>
                 </div>
                 </div>
@@ -64,13 +64,35 @@
     </script>
 
     <script>
+
+        var nameOfMazeGenerated;
+
+        function solveGame() {
+            $('#btnSolve').addClass('disabled');
+            var algorithm = $("#algorithmSelect").val();
+            var algoCode = 1;
+            if (algorithm == "DFS") {
+                var algoCode = 0;
+            }
+            var apiuri = "http://localhost:4714/api/SinglePlayer/" + nameOfMazeGenerated + "/" + algoCode;
+            $.get(apiuri).done(function (solutionJson) {
+                var solutionString = solutionJson.Solution;
+                var solutionArray = new Array(solutionString.length);
+                for (var i = 0; i < solutionString.length; i++){
+                    solutionArray[i] = solutionString[i];
+                 }
+                var board = $("#myCanvas").solve(solutionArray);
+            });
+        }
+
+
         function startGame() {
                 $('#btnStart').addClass('disabled');
 
                 var rows = $("#mazeRows").val();
                 var cols = $("#mazeCols").val();
                 var mazeName = $("#mazeName").val();
-
+                nameOfMazeGenerated = mazeName;
                 var apiuri = "http://localhost:4714/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
                 $.post(apiuri).done(function (mazeJson) {
 
@@ -80,7 +102,7 @@
                     //console.log("json: " + mazeString);
                     var startRow = mazeJson.Start.Row;
                     var startCol = mazeJson.Start.Col;
-                    var endRow = mazeJson.Start.Row;
+                    var endRow = mazeJson.End.Row;
                     var endCol = mazeJson.End.Col;
 
                     var rows = mazeJson.Rows;
@@ -100,6 +122,7 @@
                         }
                     }
 
+                    console.log("TEST " + endCol + "  " + endRow);
                     //update the board
                     var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol);
                     var board = $("#myCanvas").drawMaze();
