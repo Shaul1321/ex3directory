@@ -1,6 +1,8 @@
-﻿(function ($) {
-    $.fn.drawMaze = function (mazeData, startRow, startCol
-        , exitRow, exitCol, playerImage, exitImage, enabled, callBack) {
+﻿
+(function ($) {
+    // $.fn.drawMaze = function (mazeData, startRow, startCol
+    //     , exitRow, exitCol, playerImage, exitImage, enabled, callBack) {
+    $.fn.mazeBoard = function (mazeData) {
         var img = new Image();
         //img.src = "http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg";
         img.src = "../Views/icon.png";
@@ -27,12 +29,12 @@
 
 
         //context.drawImage("..\Views\mazeIcon.png", 100, 100);
-        
+
 
         img.onload = function () {
-            context.drawImage(img, 50, 50, cellWidth, cellHeight);
+            //context.drawImage(img, 50, 50, cellWidth, cellHeight);
         }
 
         return this;
     }
-    })(jQuery);
+})(jQuery);

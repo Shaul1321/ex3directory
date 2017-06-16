@@ -137,8 +137,10 @@
     <Content Include="Scripts\jQuery.mazeBoard.js" />
     <Content Include="Views\arrow.png" />
     <Content Include="Views\HtmlPage1.html" />
+    <Content Include="Views\HtmlPage2.html" />
     <Content Include="Views\icon.png" />
     <Content Include="Views\index.html" />
+    <Content Include="Views\menu2.html" />
     <Content Include="Views\SinglePlayer.html" />
     <Content Include="Views\HtmlPage3.html" />
     <Content Include="Views\UpperMenu.html" />
