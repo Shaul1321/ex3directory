@@ -8,8 +8,15 @@
     var canvasElement;
     var canvasContext;
     var mazeArray;
+    var movementAllowed; 
+    var startRow;
+    var startCol;
+    var exitRow;
+    var exitCol;
+    var callbackFunction;
 
     $(this).keydown(function (e) {
+       if (movementAllowed){ 
         var newRow = position['row'];
         var newCol = position['col'];
 
@@ -46,12 +53,12 @@
             position['row'] = newRow;
             position['col'] = newCol;
         }
+     }
     });
+
 
     function reDraw() {
         canvasContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-
         var img = new Image();
         img.src = "../Views/icon.png";
 
@@ -76,13 +83,25 @@
         }
     }
 
-    $.fn.initialize = function (mazeData) {
+    function h() {
+        $(canvasElement).on('keypress', function f() { alert("bye") });
+    }
+
+    $.fn.initialize = function (mazeData, startRow, startCol, exitRow, exitCol, callback) {
         position = { 'row': 0, 'col': 0 };
         mazeArray = mazeData;
         this.element = $(this)[0];
         canvasElement = this.element;
         var context = canvasElement.getContext("2d");
         canvasContext = context;
+        movementAllowed = true;
+
+        this.startRow = startRow;
+        this.startCol = startCol;
+        this.exitRow = exitRow;
+        this.exitCol = exitCol;
+        //this.callbackFunction = callBack;
+
     }
 
     $.fn.drawMaze = function () {

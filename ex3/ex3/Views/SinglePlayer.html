@@ -76,7 +76,13 @@
 
                     //when done load the maze propertieis from the json
                     var mazeString = mazeJson.Maze;
-                    console.log("json: " + mazeString);
+
+                    //console.log("json: " + mazeString);
+                    var startRow = mazeJson.Start.Row;
+                    var startCol = mazeJson.Start.Col;
+                    var endRow = mazeJson.Start.Row;
+                    var endCol = mazeJson.End.Col;
+
                     var rows = mazeJson.Rows;
                     var cols = mazeJson.Cols;
                     var mazeArray = new Array(rows);
@@ -95,7 +101,7 @@
                     }
 
                     //update the board
-                    var board = $("#myCanvas").initialize(mazeArray);
+                    var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol);
                     var board = $("#myCanvas").drawMaze();
                     console.log(board);
                 });
