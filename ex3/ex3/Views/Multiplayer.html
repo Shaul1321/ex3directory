@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Title of the document</title>
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> 
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="../Scripts/jQuery.mazeBoard.js"></script>
 </head>
 
@@ -14,54 +14,53 @@
     <div id="menuBar"> </div>
     <h1 id="headline">   Multi Player</h1>
 
-
-        <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
-
-     
-        <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
+    <canvas id="myCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
+    <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
+    <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
 
 
-        <div class="col-xs-3">
-            <div class="form-group">
-                <label for="mazeName" class="col-2 col-form-label">Name</label>
-                <div class="col-10">
-                    <input class="form-control" type="text" value="myMaze" id="mazeName">
-                </div>
+    <div class="col-xs-1">
+        <div class="form-group">
 
-                <label for="mazeRows" class="col-2 col-form-label">Rows</label>
-                <div class="col-10">
-                    <input class="form-control" type="number" value="10" id="mazeRows">
-                </div>
+            <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
+            <div>
+                <select id="algorithmSelect" class="selectpicker col-2 col-form-label">
+                    <option>DFS</option>
+                    <option>BFS</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <span class="input-group-btn">
+                    <button id="btnJoin" class="btn btn-primary" type="button" onclick="joinGame()">Join Game</button>
+                </span>
+            </div>
 
-                <label for="mazeCols" class="col-2 col-form-label">Cols</label>
-                <div class="col-10">
-                    <input class="form-control" type="number" value="10" id="mazeCols">
-                </div>
+            <h3>Start new game</h3>
+            <label for="mazeName" class="col-2 col-form-label">Name</label>
+            <div class="col-10">
+                <input class="form-control" type="text" value="myMaze" id="mazeName">
+            </div>
 
-                <br />
-                <div>
-                    <span class="input-group-btn">
-                        <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
-                    </span>
-                </div>
+            <label for="mazeRows" class="col-2 col-form-label">Rows</label>
+            <div class="col-10">
+                <input class="form-control" type="number" value="10" id="mazeRows">
+            </div>
 
-                <br />
-                <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
-                <div>
-                    <select id="algorithmSelect" class="selectpicker col-2 col-form-label">
-                        <option>DFS</option>
-                        <option>BFS</option>
-                    </select>
-                </div>
-                <br />
-                <div>
-                    <span class="input-group-btn">
-                        <button id="btnSolve" class="btn btn-primary" type="button" onclick="solveGame()">Solve</button>
-                    </span>
-                </div>
-                </div>
+            <label for="mazeCols" class="col-2 col-form-label">Cols</label>
+            <div class="col-10">
+                <input class="form-control" type="number" value="10" id="mazeCols">
+            </div>
 
+            <br />
+            <div>
+                <span class="input-group-btn">
+                    <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
+                </span>
+            </div>
         </div>
+
+    </div>
 
 
 
@@ -104,7 +103,6 @@
                 -moz-transform: rotate(360deg);
             }
         }
-
     </style>
 
 
@@ -207,7 +205,8 @@
             });
 
     </script>
-    <script> 
+    <script>
+
             $(document).ready(function () {
                 $('#btnloading').hide();
 
@@ -253,8 +252,8 @@
 
            */
             })
-                
-        </script>
+
+    </script>
 
 
 </body>

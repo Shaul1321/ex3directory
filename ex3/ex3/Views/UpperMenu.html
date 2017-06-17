@@ -38,7 +38,8 @@
         
         $('#logout').hide();
         var name = localStorage.getItem("name");
-        if (name != null) {
+        if (name !== "null") {
+            console.log(name);
             $('#register').remove();
             $('#login').remove();
             $('#logout').show();
