@@ -22,11 +22,10 @@
     <div class="col-xs-1">
         <div class="form-group">
 
-            <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
+            <label for="gameSelect" class="col-2 col-form-label">Games</label>
             <div>
-                <select id="algorithmSelect" class="selectpicker col-2 col-form-label">
-                    <option>DFS</option>
-                    <option>BFS</option>
+                <select id="gameSelect" class="selectpicker col-3 col-form-label">
+ 
                 </select>
             </div>
             <br />
@@ -107,7 +106,25 @@
 
 
     <script>
+        $('#btnJoin').addClass('disabled');
         $("#menuBar").load("/Views/UpperMenu.html");
+        var apiuri = "http://localhost:4714/api/MultiPlayer/list";
+        $.get(apiuri).done(function (listJson) {
+            listJson = listJson.slice(1,listJson.length - 1);
+            var array = listJson.split(',');
+            if (array[0] == "") {
+                return;
+            }   
+
+            $('#btnJoin').removeClass('disabled');
+            for (var i = 0; i < array.length; i++) {               
+                var mazeName = array[i].slice(1, array[i].length - 1);
+                $('#gameSelect').append($('<option>', {
+                    value: null,
+                    text: mazeName
+                }));
+            }
+        });
     </script>
 
     <script>
