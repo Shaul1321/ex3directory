@@ -142,6 +142,7 @@
     <Content Include="Views\index.html" />
     <Content Include="Views\Login.html" />
     <Content Include="Views\menu2.html" />
+    <Content Include="Views\multiPlayer.css" />
     <Content Include="Views\Multiplayer.html" />
     <Content Include="Views\SignIn.html" />
     <Content Include="Views\SinglePlayer.html" />

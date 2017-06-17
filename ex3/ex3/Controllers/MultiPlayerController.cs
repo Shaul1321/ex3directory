@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using MazeServiceModel.Model;
+using Newtonsoft.Json.Linq;
+
 namespace ex3.Controllers
 {
     public class MultiPlayerController : ApiController
@@ -15,10 +17,10 @@ namespace ex3.Controllers
         // GET: api/MultiPlayer/5
         [Route("api/MultiPlayer/list")]
         [HttpGet]
-        public string GetList()
+        public String GetList()
         {
-            String listjson = mazeModel.List();
-            return listjson;
+            String mazeListAsJson = mazeModel.List();
+            return mazeListAsJson;
         }
 
         [Route("api/MultiPlayer/start/{name}/{rows}/{cols}")]
@@ -26,6 +28,15 @@ namespace ex3.Controllers
         public void StartGame(string name, int rows, int cols)
         {
             mazeModel.StartGame(name, rows, cols);
+        }
+
+        [Route("api/MultiPlayer/join/{name}")]
+        [HttpGet]
+        public JObject JoinGame(string name)
+        {
+            String answerJson = mazeModel.JoinToGame(name);
+            JObject answer  = JObject.Parse(answerJson);
+            return answer;
         }
 
         // POST: api/MultiPlayer
