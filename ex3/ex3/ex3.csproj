@@ -136,14 +136,17 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jQuery.mazeBoard.js" />
     <Content Include="Views\arrow.png" />
+    <Content Include="Views\arrow2.png" />
     <Content Include="Views\HtmlPage1.html" />
     <Content Include="Views\HtmlPage2.html" />
     <Content Include="Views\icon.png" />
     <Content Include="Views\index.html" />
+    <Content Include="Views\Loading_icon.gif" />
     <Content Include="Views\Login.html" />
     <Content Include="Views\menu2.html" />
     <Content Include="Views\multiPlayer.css" />
     <Content Include="Views\Multiplayer.html" />
+    <Content Include="Views\oponentIcon.png" />
     <Content Include="Views\SignIn.html" />
     <Content Include="Views\SinglePlayer.html" />
     <Content Include="Views\HtmlPage3.html" />

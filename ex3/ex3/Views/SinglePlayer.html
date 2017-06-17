@@ -12,13 +12,10 @@
 <body>
 
     <div id="menuBar"> </div>
-    <h1 id="headline">   Multi Player</h1>
+    <h1 id="headline">   Single Player</h1>
 
 
         <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
-
-     
-        <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
 
 
         <div class="col-xs-3">
@@ -44,7 +41,8 @@
                         <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
                     </span>
                 </div>
-
+                <br />
+                <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
                 <br />
                 <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
                 <div>
@@ -177,7 +175,9 @@
                     }
 
                     //update the board
-                    var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol);
+                    var playerImage = "../Views/icon.png";
+                    var exitImage = "../Views/arrow.png"
+                    var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage);
                     var board = $("#myCanvas").drawMaze();
                     $("#btnloading").hide();
                     $("#myCanvas").show();
