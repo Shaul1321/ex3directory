@@ -68,6 +68,8 @@
 
 
     <style>
+
+        
         .glyphicon-refresh-animate {
             -animation: spin .7s infinite linear;
             -ms-animation: spin .7s infinite linear;
@@ -110,6 +112,8 @@
 
     <script>
         $("#menuBar").load("/Views/UpperMenu.html");
+        $("#myCanvas").hide();
+        $("#btnloading").hide();
     </script>
 
     <script>
@@ -138,6 +142,7 @@
         function startGame() {
                 $('#btnStart').addClass('disabled');
                 $('#btnSolve').removeClass('disabled');
+                $("#btnloading").show();
                 var rows = $("#mazeRows").val();
                 var cols = $("#mazeCols").val();
                 var mazeName = $("#mazeName").val();
@@ -174,7 +179,8 @@
                     //update the board
                     var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol);
                     var board = $("#myCanvas").drawMaze();
-                    console.log(board);
+                    $("#btnloading").hide();
+                    $("#myCanvas").show();
                 });
             }
 
@@ -208,7 +214,7 @@
     </script>
     <script> 
             $(document).ready(function () {
-                $('#btnloading').hide();
+                //$('#btnloading').hide();
 
                 $('#btnSolve').addClass('disabled');
                 /*
