@@ -137,7 +137,7 @@
         exitimg.onload = function () {
             //console.log(exitCol);
             //console.log(exitRow);
-            //canvasContext.drawImage(exitimg, exitCol * cellWidth, exitRow * cellHeight, cellWidth, cellHeight);
+            ctx.drawImage(exitimg, exitCol * cellWidth, exitRow * cellHeight, cellWidth, cellHeight);
         }
 
         img.onload = function () {
@@ -200,8 +200,7 @@
     $.fn.solve = function (ss) {
         reDraw();
         movementAllowed = false;
-        position['row'] = startRow;
-        position['col'] = startCol;
+        $(canvasElement).data("position", { row: startRow, col: startCol });
         
         console.log("solution is " + ss);
         console.log("exitRow is " + exitRow + "and exitcol is " + exitCol);
@@ -215,18 +214,19 @@
         var direction = solutionArray[animationIndex];
         animationIndex++;
         reDraw();
+        var pos = $(canvasElement).data("position");
         switch (direction) {
             case "0": //left
-                position['col'] = position['col'] - 1;
+                pos['col'] = pos['col'] - 1;
                 break;
             case "1": //right
-                position['col'] = position['col']  + 1;
+                pos['col'] = pos['col']  + 1;
                 break;
             case "2": //up
-                position['row'] = position['row'] - 1;
+                pos['row'] = pos['row'] - 1;
                 break;
             case "3": //down
-                position['row'] = position['row'] + 1;
+                pos['row'] = pos['row'] + 1;
                 break;
         }
         
@@ -270,7 +270,7 @@
             ctx.drawImage(img, pos['col'] * cellWidth, pos['row'] * cellHeight, cellWidth, cellHeight);
         }
         exitimg.onload = function () {
-            //canvasContext.drawImage(exitimg, exitCol * cellHeight, exitRow * cellWidth, cellWidth, cellHeight);
+            ctx.drawImage(exitimg, exitCol * cellHeight, exitRow * cellWidth, cellWidth, cellHeight);
         }
 
         console.log(playerIcon);

@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Title of the document</title>
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
-    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> 
+    <!--<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+   <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  
     <script src="../Scripts/jQuery.mazeBoard.js"></script>
 </head>
 
@@ -16,7 +19,7 @@
 
 
         <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
-        <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>  
+       
 
         <div class="col-xs-3">
             <div class="form-group">
@@ -27,12 +30,12 @@
 
                 <label for="mazeRows" class="col-2 col-form-label">Rows</label>
                 <div class="col-10">
-                    <input class="form-control" type="number" value="10" id="mazeRows">
+                    <input class="form-control" type="number" min="2" max="100" value="10" id="mazeRows">
                 </div>
 
                 <label for="mazeCols" class="col-2 col-form-label">Cols</label>
                 <div class="col-10">
-                    <input class="form-control" type="number" value="10" id="mazeCols">
+                    <input class="form-control" type="number" min="2" max="100" value="10" id="mazeCols">
                 </div>
 
                 <br />
@@ -41,6 +44,19 @@
                         <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
                     </span>
                 </div>
+  
+           <div  id="argumentsError" class="alert alert-info">
+                    <strong>Error! </strong>Rows and Cols should be in the range 2-100.
+                </div>
+
+     
+
+                <!--
+                <div id="argumentsError" class=" alert alert-error alert-block" style="width:200px">
+                    <span class="close" data-dismiss="alert">&times;</span>
+                    <span>Rows and Cols should be in the range 2-100.</span>
+                </div>
+                     -->
                 <br />
                 <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
                 <br />
@@ -112,6 +128,7 @@
         $("#menuBar").load("/Views/UpperMenu.html");
         $("#myCanvas").hide();
         $("#btnloading").hide();
+        $("#argumentsError").hide();
     </script>
 
     <script>
@@ -139,12 +156,20 @@
 
 
         function startGame() {
-                $('#btnStart').addClass('disabled');
-                $('#btnSolve').removeClass('disabled');
-                $("#btnloading").show();
+
                 var rows = $("#mazeRows").val();
                 var cols = $("#mazeCols").val();
                 var mazeName = $("#mazeName").val();
+
+                if (rows < 2 || cols < 2 || rows>100 || cols>100) {
+                    $("#argumentsError").show();
+                    return;
+                }
+
+                $('#btnStart').addClass('disabled');
+                $('#btnSolve').removeClass('disabled');
+                $("#btnloading").show();
+                $("#argumentsError").hide();
                 nameOfMazeGenerated = mazeName;
                 var apiuri = "http://localhost:4714/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
                 $.post(apiuri).done(function (mazeJson) {
@@ -182,8 +207,6 @@
                     mazeBoard = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage);
                     mazeBoard = $("#myCanvas").drawMaze();
 
-                    var board2 = $("#oponentCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, oponentImage, exitImage);
-                    var board2 = $("#oponentCanvas").drawMaze();
                     $("#btnloading").hide();
                     $("#myCanvas").show();
                 });
@@ -191,7 +214,6 @@
 
         $(document).keydown(function (e) {
             $("#myCanvas").playerMoved(e);
-            $("#oponentCanvas").playerMoved(e);
             //e.preventDefault(); // prevent the default action (scroll / move caret)
         });
 
