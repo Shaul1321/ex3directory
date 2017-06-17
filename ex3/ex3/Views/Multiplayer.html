@@ -109,6 +109,12 @@
 
 
     <script>
+        $(document).keydown(function (e) {
+            $("#myCanvas").playerMoved(e);
+            $("#oponentCanvas").playerMoved(e);
+            //e.preventDefault(); // prevent the default action (scroll / move caret)
+        });
+
         $('#btnJoin').addClass('disabled');
         $('#btnwaiting').hide();
         $("#menuBar").load("/Views/UpperMenu.html");
@@ -258,28 +264,10 @@
 
             function myFunction(event) {
                 var x = event.which || event.keyCode;
-                //alert(x);
+                alert(x);
             }
 
-            $(document).keydown(function (e) {
-                switch (e.which) {
-                    case 37: // left
-                        console.log("yay2");
-                        break;
-
-                    case 38: // up
-                        break;
-
-                    case 39: // right
-                        break;
-
-                    case 40: // down
-                        break;
-
-                    default: return; // exit this handler for other keys
-                }
-                e.preventDefault(); // prevent the default action (scroll / move caret)
-            });
+   
 
     </script>
     <script>

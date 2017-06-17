@@ -24,30 +24,33 @@
     var exitIcon2;
     var isOponent;
 
+    /*
     $(this).keydown(function (e) {
-       if (movementAllowed){ 
-        var newRow = position['row'];
-        var newCol = position['col'];
+        if (movementAllowed) { 
+            canvasElement = this[0];
+            var pos = $(canvasElement).data("position");
+            var newRow = pos['row'];
+            var newCol = pos['col'];
         console.log("A MOVE");
         switch (e.which) {
             case 37: // left
                 //position['col'] = position['col'] - 1;
-                newCol = position['col'] - 1;
+                newCol = pos['col'] - 1;
                 break;
 
             case 38: // up
                 //position['row'] = position['row'] - 1;
-                newRow = position['row'] - 1;
+                newRow = pos['row'] - 1;
                 break;
 
             case 39: // right
                 //position['col'] = position['col'] + 1;
-                newCol = position['col'] + 1;
+                newCol = pos['col'] + 1;
                 break;
 
             case 40: // down
                 //position['row'] = position['row'] + 1;
-                newRow = position['row'] + 1;
+                newRow = pos['row'] + 1;
                 break;
 
             default: return; // exit this handler for other keys
@@ -55,21 +58,58 @@
 
         if (mazeArray[newRow][newCol] == 0) {
             reDraw();
-            position['row'] = newRow;
-            position['col'] = newCol;
+            $(canvasElement).data("position", { row: newRow, col: newCol });           
         }
      }
     });
+    */
+
+    function handleKeyPress(e) {
+        if (movementAllowed) {
+            var pos = $(canvasElement).data("position");
+            var newRow = pos['row'];
+            var newCol = pos['col'];
+            console.log("A MOVE");
+            switch (e.which) {
+                case 37: // left
+                    //position['col'] = position['col'] - 1;
+                    newCol = pos['col'] - 1;
+                    break;
+
+                case 38: // up
+                    //position['row'] = position['row'] - 1;
+                    newRow = pos['row'] - 1;
+                    break;
+
+                case 39: // right
+                    //position['col'] = position['col'] + 1;
+                    newCol = pos['col'] + 1;
+                    break;
+
+                case 40: // down
+                    //position['row'] = position['row'] + 1;
+                    newRow = pos['row'] + 1;
+                    break;
+
+                default: return; // exit this handler for other keys
+            }
+
+            if (mazeArray[newRow][newCol] == 0) {
+                reDraw();
+                $(canvasElement).data("position", { row: newRow, col: newCol });
+            }
+        }
+    }
 
 
     function reDraw() {
         //canvasContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
+        var ctx = $(canvasElement).data("canvasContext");
         var exitimg = new Image();
         exitimg.src = "../Views/arrow.png";;
 
         var img = new Image();
-        img.src = playerIcon;
+        img.src = $(canvasElement).data("player_icon");
 
         
 
@@ -77,7 +117,8 @@
         var cols = mazeArray[0].length;
         var cellWidth = canvasElement.width / cols;
         var cellHeight = canvasElement.height / rows;
-        canvasContext.clearRect(position['col'] * cellHeight, position['row'] * cellWidth, cellWidth, cellHeight);
+        var pos = $(canvasElement).data("position");
+        ctx.clearRect(pos['col'] * cellWidth, pos['row'] * cellHeight, cellWidth, cellHeight);
 
         
         console.log(cellWidth);
@@ -86,7 +127,7 @@
             for (var j = 0; j < cols; j++) {
                 if (mazeArray[i][j] == 1) {
                   
-                    canvasContext.fillRect(cellWidth * j, cellHeight * i,
+                    ctx.fillRect(cellWidth * j, cellHeight * i,
                         cellWidth, cellHeight);
                 }
             }
@@ -96,22 +137,29 @@
         exitimg.onload = function () {
             //console.log(exitCol);
             //console.log(exitRow);
-            canvasContext.drawImage(exitimg, exitCol * cellWidth, exitRow * cellHeight, cellWidth, cellHeight);
+            //canvasContext.drawImage(exitimg, exitCol * cellWidth, exitRow * cellHeight, cellWidth, cellHeight);
         }
 
         img.onload = function () {
-            canvasContext.drawImage(img, position['col'] * cellWidth, position['row'] * cellHeight, cellWidth, cellHeight);
+            //canvasContext.drawImage(img, position['col'] * cellWidth, position['row'] * cellHeight, cellWidth, cellHeight);
+            pos = $(canvasElement).data("position");
+            ctx.drawImage(img, pos['col'] * cellWidth, pos['row'] * cellHeight, cellWidth, cellHeight);
         }
 
         canvasContext.fillStyle = "#0073e6";
         //canvasContext.fillRect(cellWidth * exitCol, cellHeight * exitRow,
         //    cellWidth, cellHeight);
         canvasContext.fillStyle = "#000000";
-
+        return this;
     }
 
     function h() {
         $(canvasElement).on('keypress', function f() { alert("bye") });
+    }
+
+    $.fn.playerMoved = function (e) {
+        canvasElement = this[0];
+        handleKeyPress(e);
     }
 
     $.fn.initialize = function (mazeData, initRow, initCol, finishRow, finishCol, playerImg, exitImg, callback) {
@@ -131,6 +179,10 @@
         exitRow = finishRow;
         exitCol = finishCol;
         playerIcon = playerImg;
+        //this.playerImage = playerImg;
+        $(canvasElement).data("player_icon", playerImg);
+        $(canvasElement).data("position", { row: initRow, col: initCol });
+        $(canvasElement).data("canvasContext", context);
         //oponentIcon = oponentImg;
         exitIcon = exitImg;
         position['row'] = initRow;
@@ -138,8 +190,13 @@
         //reDraw();
         //this.callbackFunction = callBack;
         console.log("CANVAS CONTEXT IS " + canvasContext + "AND ELEMENT IS " + canvasElement.id);
+        console.log(this);
+        console.log("TRYTRY " + this);
+        //$(canvasElement).keypress(function (e) { handleKeyPress(e) });
+        //$(document).on('keypress', this, function (e) { handleKeyPress(e)});
+        return this;
     }
-
+    
     $.fn.solve = function (ss) {
         reDraw();
         movementAllowed = false;
@@ -181,12 +238,12 @@
     }
 
     $.fn.drawMaze = function () {
-
+        var ctx = $(canvasElement).data("canvasContext");
         var img = new Image();
-        img.src = playerIcon;
+        img.src = $(canvasElement).data("player_icon");
         var exitimg = new Image();
         exitimg.src = "../Views/arrow.png";
-
+       
         var rows = mazeArray.length;
         var cols = mazeArray[0].length;
         console.log("there are " + rows + " and " + cols + "columns");
@@ -199,7 +256,7 @@
             for (var j = 0; j < cols; j++) {
                 if (mazeArray[i][j] == 1) {
 
-                    canvasContext.fillRect(cellWidth * j, cellHeight * i,
+                    ctx.fillRect(cellWidth * j, cellHeight * i,
                         cellWidth, cellHeight);
                 }
             }
@@ -207,7 +264,10 @@
 
 
         img.onload = function () {;
-            canvasContext.drawImage(img, exitCol * cellWidth, exitRow * cellHeight, cellWidth, cellHeight);
+            //canvasContext.drawImage(img, position['col'] * cellWidth, position['row'] * cellHeight, cellWidth, cellHeight);
+            console.log("I DRAW AN IMAGE " + img.src + " ON context " + ctx);
+            pos = $(canvasElement).data("position"); 
+            ctx.drawImage(img, pos['col'] * cellWidth, pos['row'] * cellHeight, cellWidth, cellHeight);
         }
         exitimg.onload = function () {
             //canvasContext.drawImage(exitimg, exitCol * cellHeight, exitRow * cellWidth, cellWidth, cellHeight);

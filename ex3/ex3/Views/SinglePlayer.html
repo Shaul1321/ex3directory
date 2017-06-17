@@ -16,7 +16,7 @@
 
 
         <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
-
+        <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>  
 
         <div class="col-xs-3">
             <div class="form-group">
@@ -117,6 +117,7 @@
     <script>
 
         var nameOfMazeGenerated;
+        var mazeBoard;
 
         function solveGame() {
             $('#btnSolve').addClass('disabled');
@@ -177,39 +178,27 @@
                     //update the board
                     var playerImage = "../Views/icon.png";
                     var exitImage = "../Views/arrow.png"
-                    var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage);
-                    var board = $("#myCanvas").drawMaze();
+                    var oponentImage = "../Views/oponentIcon.png";
+                    mazeBoard = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage);
+                    mazeBoard = $("#myCanvas").drawMaze();
+
+                    var board2 = $("#oponentCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, oponentImage, exitImage);
+                    var board2 = $("#oponentCanvas").drawMaze();
                     $("#btnloading").hide();
                     $("#myCanvas").show();
                 });
             }
 
-
+        $(document).keydown(function (e) {
+            $("#myCanvas").playerMoved(e);
+            $("#oponentCanvas").playerMoved(e);
+            //e.preventDefault(); // prevent the default action (scroll / move caret)
+        });
 
             function myFunction(event) {
                 var x = event.which || event.keyCode;
                 //alert(x);
             }
-
-            $(document).keydown(function (e) {
-                switch (e.which) {
-                    case 37: // left
-                        console.log("yay2");
-                        break;
-
-                    case 38: // up
-                        break;
-
-                    case 39: // right
-                        break;
-
-                    case 40: // down
-                        break;
-
-                    default: return; // exit this handler for other keys
-                }
-                e.preventDefault(); // prevent the default action (scroll / move caret)
-            });
 
     </script>
     <script> 
