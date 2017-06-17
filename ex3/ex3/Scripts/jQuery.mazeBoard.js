@@ -122,6 +122,7 @@
         exitCol = finishCol;
         position['row'] = initRow;
         position['col'] = initCol;
+        reDraw();
         //this.callbackFunction = callBack;
     }
 
@@ -174,8 +175,10 @@
 
         var rows = mazeArray.length;
         var cols = mazeArray[0].length;
+        console.log("there are " + rows + " and " + cols + "columns");
         var cellWidth =  canvasElement.width / cols;
         var cellHeight = canvasElement.height / rows;
+        console.log("width is " + cellWidth + " and height is " + cellHeight);
         console.log(cellWidth);
         console.log(cellHeight);
         for (var i = 0; i < rows; i++) {
@@ -190,7 +193,7 @@
 
 
         img.onload = function () {;
-            canvasContext.drawImage(img, position['col'] * cellHeight,  position['row']*cellWidth, cellWidth, cellHeight);
+            canvasContext.drawImage(exitimg, exitCol * cellHeight, exitRow * cellWidth, cellWidth, cellHeight);
         }
         exitimg.onload = function () {
             canvasContext.drawImage(exitimg, exitCol * cellHeight, exitRow * cellWidth, cellWidth, cellHeight);

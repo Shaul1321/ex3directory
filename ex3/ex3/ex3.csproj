@@ -140,13 +140,16 @@
     <Content Include="Views\HtmlPage2.html" />
     <Content Include="Views\icon.png" />
     <Content Include="Views\index.html" />
+    <Content Include="Views\Login.html" />
     <Content Include="Views\menu2.html" />
+    <Content Include="Views\SignIn.html" />
     <Content Include="Views\SinglePlayer.html" />
     <Content Include="Views\HtmlPage3.html" />
     <Content Include="Views\UpperMenu.html" />
     <Content Include="Views\HtmlPage5.html" />
     <Content Include="Views\mazeIcon.png" />
     <Content Include="Views\StyleSheet1.css" />
+    <Content Include="Views\waitingIndication.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
