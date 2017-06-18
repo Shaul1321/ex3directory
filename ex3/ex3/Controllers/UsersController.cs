@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ex3.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ex3.Controllers
 {
@@ -17,6 +19,14 @@ namespace ex3.Controllers
     {
         private ex3Context db = new ex3Context();
 
+        string ComputeHash(string input)
+        {
+            SHA1 sha = SHA1.Create();
+            byte[] buffer = Encoding.ASCII.GetBytes(input);
+            byte[] hash = sha.ComputeHash(buffer);
+            string hash64 = Convert.ToBase64String(hash);
+            return hash64;
+        }
 
         // GET: api/Users
         public IQueryable<Users> GetUsers()
@@ -25,11 +35,23 @@ namespace ex3.Controllers
         }
 
         // GET: api/Users
-        [Route("api/Users/{name}/{password}/")]
+        [Route("api/Users/addUser")]
         [HttpGet]
-        public IQueryable<Users> AddUser(string name, int passowrd)
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult AddUser()
         {
-            return db.Users;
+            string hashedPassowrd = ComputeHash("123456789");
+            DateTime currentTime = DateTime.Now;
+            IQueryable < Users > existingUsers = db.Users.Where(row => row.UserName == "myFirstUser" && row.EncryptedPassword == hashedPassowrd);
+            if (existingUsers.Any())
+            {
+                return BadRequest();
+            }
+            Users user = new Users { UserName = "myFirstUser", EncryptedPassword = hashedPassowrd, SigningDate= currentTime, Wins=0, Loses=0 };
+            db.Users.Add(user);
+            db.SaveChanges();
+            return Ok(user);
+            //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
         /*
 // GET: api/Users/5

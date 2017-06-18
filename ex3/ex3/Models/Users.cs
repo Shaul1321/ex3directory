@@ -13,8 +13,8 @@ namespace ex3.Models
         public int Loses { get; set; }
         public DateTime SigningDate { get; set; }
         [Required]
-        public string UserName;
+        public string UserName { get; set; }
         [Required]
-        public string EncryptedPassword;
+        public string EncryptedPassword { get; set; }
     }
 }
