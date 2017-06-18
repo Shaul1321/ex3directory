@@ -19,7 +19,7 @@
 
 
         <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
-       
+        <img id="loader" src="../Views/Loading_icon.gif">
 
         <div class="col-xs-3">
             <div class="form-group">
@@ -125,9 +125,12 @@
 
 
     <script>
+
+
         $("#menuBar").load("/Views/UpperMenu.html");
         $("#myCanvas").hide();
         $("#btnloading").hide();
+        $("#loader").hide();
         $("#argumentsError").hide();
     </script>
 
@@ -169,6 +172,7 @@
                 $('#btnStart').addClass('disabled');
                 $('#btnSolve').removeClass('disabled');
                 $("#btnloading").show();
+                $("#loader").show();
                 $("#argumentsError").hide();
                 nameOfMazeGenerated = mazeName;
                 var apiuri = "http://localhost:4714/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
@@ -208,6 +212,7 @@
                     mazeBoard = $("#myCanvas").drawMaze();
 
                     $("#btnloading").hide();
+                    $("#loader").hide();
                     $("#myCanvas").show();
                 });
             }
@@ -226,6 +231,13 @@
     <script> 
             $(document).ready(function () {
                 //$('#btnloading').hide();
+
+                /*
+                var loadingImage = new Image();
+                loadingImage.src = "../Views/Loading_icon.gif";
+                ctx = $("#myCanvas").get(0).getContext("2d");
+                ctx.drawImage(loadingImage, 200, 200, 70, 70);
+                */
 
                 $('#btnSolve').addClass('disabled');
                 /*
