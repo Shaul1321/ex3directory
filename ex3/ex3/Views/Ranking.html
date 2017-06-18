@@ -21,7 +21,8 @@
                 <th>Loses</th>
             </tr>
         </thead>
-        <tbody id="table_body">          
+        <tbody id="table_body">
+          
         </tbody>
     </table>
 </body>
@@ -58,7 +59,11 @@
             var name = users[i]['name'];
             var wins = users[i]['won'];
             var loses = users[i]['lost'];
-           
+            var colorString = "";
+            if (name == sessionStorage['name']) {
+                colorString = ' class="table-active"';
+                alert("<tr" + colorString + "><th scope='row'>" + i + "</th><td>" + name + "</td> <td>" + wins + "</td> <td>" + loses + "</td>" + "</tr>");
+            }
             $('#table_body').append("<tr" + colorString+"><th scope='row'>" + i + "</th><td>" +name +"</td> <td>" + wins + "</td> <td>" + loses + "</td>"+   "</tr>");
         }
         $("#loader").hide();
