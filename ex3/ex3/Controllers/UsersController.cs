@@ -42,7 +42,7 @@ namespace ex3.Controllers
         {
             string hashedPassowrd = ComputeHash(password);
             DateTime currentTime = DateTime.Now;
-            IQueryable < Users > existingUsers = db.Users.Where(row => row.UserName == userName && row.EncryptedPassword == hashedPassowrd);
+            IQueryable < Users > existingUsers = db.Users.Where(row => row.UserName == userName);
             if (existingUsers.Any())
             {
                 return BadRequest();
@@ -50,23 +50,31 @@ namespace ex3.Controllers
             Users user = new Users { UserName = userName, EncryptedPassword = hashedPassowrd, SigningDate= currentTime, Wins=0, Loses=0 };
             db.Users.Add(user);
             db.SaveChanges();
+            
             return Ok(user);
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
 
         // GET: api/Users
-        [Route("api/Users/updateScore/{userName}/{score}")]
+        [Route("api/Users/updateScore/{userName}/{won}")]
         [HttpGet]
         [ResponseType(typeof(Users))]
-        public IHttpActionResult UpdateUserScore(string userName, int score)
+        public IHttpActionResult UpdateUserScore(string userName, Boolean won)
         {
 
             IEnumerable<Users> existingUsers = db.Users.Where(row => row.UserName == userName);
             if (existingUsers.Any())
             {
                 Users theUser = existingUsers.ElementAt(0);
-                theUser.Loses += 1;
+                if (won) {
+                    theUser.Wins += 1;
+                }
+                else
+                {
+                    theUser.Loses += 1;
+                }
+                db.SaveChanges();
                 return Ok(theUser);
             }
             return BadRequest();

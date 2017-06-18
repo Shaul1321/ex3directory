@@ -146,14 +146,16 @@
             if (algorithm == "DFS") {
                 var algoCode = 0;
             }
-            var apiuri = "http://localhost:4714/api/SinglePlayer/" + nameOfMazeGenerated + "/" + algoCode;
-            $.get(apiuri).done(function (solutionJson) {
+            var apiuri = "/api/SinglePlayer/" + nameOfMazeGenerated + "/" + algoCode;
+            $.get(apiuri).done(function (solutionJson, status) {
                 var solutionString = solutionJson.Solution;
                 var solutionArray = new Array(solutionString.length);
-                for (var i = 0; i < solutionString.length; i++){
+                for (var i = 0; i < solutionString.length; i++) {
                     solutionArray[i] = solutionString[i];
-                 }
+                }
                 var board = $("#myCanvas").solve(solutionArray);
+            }).fail(function () {
+                alert("No connection to server.");
             });
         }
 
@@ -175,7 +177,7 @@
                 $("#loader").show();
                 $("#argumentsError").hide();
                 nameOfMazeGenerated = mazeName;
-                var apiuri = "http://localhost:4714/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
+                var apiuri = "/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
                 $.post(apiuri).done(function (mazeJson) {
 
                     //when done load the maze propertieis from the json

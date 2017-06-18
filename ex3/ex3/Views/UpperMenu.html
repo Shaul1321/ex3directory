@@ -37,7 +37,7 @@
     <script>
         
         $('#logout').hide();
-        var name = localStorage.getItem("name");
+        var name = sessionStorage.getItem("name");
         if (name !== "null") {
             console.log(name);
             $('#register').remove();

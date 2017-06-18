@@ -37,9 +37,16 @@
                 <label for="inputPassword2" class="sr-only">Renter Password</label>
                 <input type="password" id="inputPassword2" class="form-control" placeholder="Verify Password" required>
 
-                <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button id="btnLogIn" onclick="signIn()" required class="btn btn-lg btn-primary btn-block" type="button" formnovalidate>Log in</button>
                
             </form>
+            <div id="passwordsMisMatch" class="alert alert-info">
+                <strong>Error! </strong>passwords don't match.
+            </div>
+            <div id="userAlreadyExist" class="alert alert-info">
+                <strong>Error! </strong>User of the same name already exists.
+            </div>
+            <img id="loader" src="../Views/Loading_icon.gif">
         </div>
     </div> <!-- /container -->
 
@@ -64,7 +71,41 @@
     -->
 
     <script>
-            $("#menuBar").load("/Views/UpperMenu.html");
+        $("#menuBar").load("/Views/UpperMenu.html");
+        $("#passwordsMisMatch").hide();
+        $("#userAlreadyExist").hide();
+        $("#loader").hide();
+
+        function yay() {
+            alert("hello");
+        }
+
+        
+        function signIn() {
+
+            var userName = $("#inputName").val();
+            var password = $("#inputPassword").val();
+            if (userName == "" || password == "") {
+                alert("Please enter userName and password.");
+                return;
+            }
+            var reenteredPassword = $("#inputPassword2").val();
+            if (reenteredPassword != password) {
+                $("#passwordsMisMatch").show();
+                return;
+            }
+            $("#loader").show();
+            var apiuri = "/api/Users/addUser/" + userName + "/" + password;
+            $.get(apiuri).done(function (response, status) {
+
+                sessionStorage.setItem("name", userName);
+                window.location.href = "../Views/index.html";
+                $("#loader").hide();
+            }).fail(function (response, status) {               
+                $("#loader").hide();
+                $("#userAlreadyExist").show();
+            });
+        }
     </script>
 </body>
 </html>
