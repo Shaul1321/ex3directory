@@ -64,6 +64,10 @@
     });
     */
 
+    function isWithinBoard(row, col) {
+        return (row >= 0) && (row <= mazeArray.length - 1) && (col >= 0) && (col <= mazeArray[0].length - 1);
+    }
+
     function handleKeyPress(e) {
         if (movementAllowed) {
             var pos = $(canvasElement).data("position");
@@ -94,9 +98,20 @@
                 default: return; // exit this handler for other keys
             }
 
-            if (mazeArray[newRow][newCol] == 0) {
+            console.log("*****TESTESTEST*****");
+            console.log(newRow);
+            console.log(newCol);
+            console.log(pos['row']);
+            console.log(pos['col']);
+            console.log(mazeArray);
+            console.log("*****TESTESTEST*****");
+            if (isWithinBoard(newRow, newCol) && mazeArray[newRow][newCol] == 0) {
                 reDraw();
                 $(canvasElement).data("position", { row: newRow, col: newCol });
+                var pos = $(canvasElement).data("position");
+                if (pos['row'] == exitRow && pos['col'] == exitCol) {
+                    alert("you have won");
+                }
             }
         }
     }

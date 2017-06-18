@@ -216,16 +216,17 @@
                     $("#myCanvas").show();
                 });
             }
-
+        
         $(document).keydown(function (e) {
-            //var key = e.which;
-
-            //if (key==37 || key==38 || e==39 || e==40){
+            var key = e.which;
+            if (key == 37 || key == 38 || key == 39 || key==40){
               e.preventDefault();
               $("#myCanvas").playerMoved(e);
-            //}
+            }
             // prevent the default action (scroll / move caret)
         });
+        
+  
 
             function myFunction(event) {
                 var x = event.which || event.keyCode;

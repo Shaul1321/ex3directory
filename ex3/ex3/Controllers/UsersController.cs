@@ -35,22 +35,41 @@ namespace ex3.Controllers
         }
 
         // GET: api/Users
-        [Route("api/Users/addUser")]
+        [Route("api/Users/addUser/{userName}/{password}")]
         [HttpGet]
         [ResponseType(typeof(Users))]
-        public IHttpActionResult AddUser()
+        public IHttpActionResult AddUser(string userName, string password)
         {
-            string hashedPassowrd = ComputeHash("123456789");
+            string hashedPassowrd = ComputeHash(password);
             DateTime currentTime = DateTime.Now;
-            IQueryable < Users > existingUsers = db.Users.Where(row => row.UserName == "myFirstUser" && row.EncryptedPassword == hashedPassowrd);
+            IQueryable < Users > existingUsers = db.Users.Where(row => row.UserName == userName && row.EncryptedPassword == hashedPassowrd);
             if (existingUsers.Any())
             {
                 return BadRequest();
             }
-            Users user = new Users { UserName = "myFirstUser", EncryptedPassword = hashedPassowrd, SigningDate= currentTime, Wins=0, Loses=0 };
+            Users user = new Users { UserName = userName, EncryptedPassword = hashedPassowrd, SigningDate= currentTime, Wins=0, Loses=0 };
             db.Users.Add(user);
             db.SaveChanges();
             return Ok(user);
+            //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+        }
+
+
+        // GET: api/Users
+        [Route("api/Users/updateScore/{userName}/{score}")]
+        [HttpGet]
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult UpdateUserScore(string userName, int score)
+        {
+
+            IEnumerable<Users> existingUsers = db.Users.Where(row => row.UserName == userName);
+            if (existingUsers.Any())
+            {
+                Users theUser = existingUsers.ElementAt(0);
+                theUser.Loses += 1;
+                return Ok(theUser);
+            }
+            return BadRequest();
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
         /*
