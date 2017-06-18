@@ -218,8 +218,13 @@
             }
 
         $(document).keydown(function (e) {
-            $("#myCanvas").playerMoved(e);
-            //e.preventDefault(); // prevent the default action (scroll / move caret)
+            //var key = e.which;
+
+            //if (key==37 || key==38 || e==39 || e==40){
+              e.preventDefault();
+              $("#myCanvas").playerMoved(e);
+            //}
+            // prevent the default action (scroll / move caret)
         });
 
             function myFunction(event) {
