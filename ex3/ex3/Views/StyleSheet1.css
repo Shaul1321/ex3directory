@@ -2,7 +2,7 @@
     background-color: white; 
 }
 
-#main #logo {
+#main #logo #learn {
     float: right;
     width: 18%;
     height: 10%;
@@ -22,10 +22,6 @@ h1{
 }
 
 #learn {
-    width: 6em;
-    position: center;
     background-color:  #87CEFA;
-    border: 1px solid #87CEFA;
-    word-wrap: break-word;
 }
 

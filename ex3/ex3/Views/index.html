@@ -18,10 +18,28 @@
             Play the original maze game for free.
         </p>
 
-        <p id="learn">Learn more.</p>
+        <button onclick="myFunction()">Learn more.</button>
+
+        <div id="learn">
+            This site offers maze games. You can either play by your own or with a friend.
+            In order to play with a friend, please register. In singlePlayer mode, you may ask for automatic solution of the maze.
+            You may look at previous records in the User Ranking section.
+        </div>
+
     </div>
+
+
     
     <script>
+        var x = document.getElementById('learn').style.display='none';
+        function myFunction() {
+            var x = document.getElementById('learn');
+            if (x.style.display === 'none') {
+                x.style.display = 'block';
+            } else {
+                x.style.display = 'none';
+            }
+        }
 
         $(function () {
 
