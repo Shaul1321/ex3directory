@@ -9,9 +9,10 @@
 </head>
 
 <body>
-    <h1> User Ranking</h1>
+    <div id="menuBar"> </div>
+    <h1 class="jumbotron"> User Ranking</h1>
     <img id="loader" src="../Views/Loading_icon.gif">
-    <table id="table" class="table">
+    <table id="table" class="table table-hover">
         <thead>
             <tr>
                 <th>Rank</th>
@@ -20,15 +21,7 @@
                 <th>Loses</th>
             </tr>
         </thead>
-        <tbody id="table_body">
-            <!--
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr> -->
-
+        <tbody id="table_body">          
         </tbody>
     </table>
 </body>
@@ -36,7 +29,7 @@
 </html>
 
 <script>
-
+    $("#menuBar").load("/Views/UpperMenu.html");
     var apiuri = "/api/Users";
     $("table").hide();
     $.get(apiuri).done(function (response, status) {
@@ -65,7 +58,8 @@
             var name = users[i]['name'];
             var wins = users[i]['won'];
             var loses = users[i]['lost'];
-            $('#table_body').append("<tr><th scope='row'>" + i + "</th><td>" +name +"</td> <td>" + wins + "</td> <td>" + loses + "</td>"+   "</tr>");
+           
+            $('#table_body').append("<tr" + colorString+"><th scope='row'>" + i + "</th><td>" +name +"</td> <td>" + wins + "</td> <td>" + loses + "</td>"+   "</tr>");
         }
         $("#loader").hide();
         $("#table").show();

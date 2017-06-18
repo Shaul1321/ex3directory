@@ -9,12 +9,17 @@
     <script src="../Scripts/jQuery.mazeBoard.js"></script>
     <link href="multiPlayer.css" rel="stylesheet" />
 
+    <script>
+        if (!sessionStorage['name']) {
+            window.location.href = "../Views/SignIn.html";
+        }
+    </script>
 </head>
 
 <body>
 
     <div id="menuBar"> </div>
-    <h1 id="headline">   Multi Player</h1>
+    <h1  class="page-header" id="headline">   Multi Player</h1>
     <div id="boards">
         <canvas id="myCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
         <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
@@ -24,7 +29,7 @@
     <div id="options">
         <div class="col-xs-2">
             <div class="form-group">
-
+                <h3>Join existing game</h3>
                 <label for="gameSelect" class="col-2 col-form-label">Games</label>
                 <div>
                     <select id="gameSelect" class="selectpicker col-3 col-form-label"></select>
@@ -114,6 +119,8 @@
             $("#oponentCanvas").playerMoved(e);
             //e.preventDefault(); // prevent the default action (scroll / move caret)
         });
+
+
 
         $('#btnJoin').addClass('disabled');
         $('#btnwaiting').hide();
