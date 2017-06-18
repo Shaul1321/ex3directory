@@ -12,6 +12,7 @@ using System.Web.Http.Description;
 using ex3.Models;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace ex3.Controllers
 {
@@ -29,9 +30,10 @@ namespace ex3.Controllers
         }
 
         // GET: api/Users
-        public IQueryable<Users> GetUsers()
+        public IEnumerable<Users> GetUsers()
         {
-            return db.Users;
+            IEnumerable<Users> list = db.Users.Where(row => true);
+            return list;
         }
 
         // GET: api/Users

@@ -142,9 +142,9 @@
         function solveGame() {
             $('#btnSolve').addClass('disabled');
             var algorithm = $("#algorithmSelect").val();
-            var algoCode = 1;
+            var algoCode = 0;
             if (algorithm == "DFS") {
-                var algoCode = 0;
+                var algoCode = 1;
             }
             var apiuri = "/api/SinglePlayer/" + nameOfMazeGenerated + "/" + algoCode;
             $.get(apiuri).done(function (solutionJson, status) {
