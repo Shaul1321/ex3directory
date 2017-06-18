@@ -37,6 +37,7 @@
             <div id="loginErrorMessage" class="alert alert-info">
                 <strong>Error! </strong>Wrong username or password.
             </div>
+            <img id="loader" src="../Views/Loading_icon.gif">
         </div>
     </div>
     
@@ -65,18 +66,27 @@
     <script>
         $("#menuBar").load("/Views/UpperMenu.html");
         $("#loginErrorMessage").hide();
-
+        $("#loader").hide();
         function logIn() {
-            console.log("hi0");
+
             var userName = $("#inputName").val();
-            var pPassword = $("#inputPassword").val();
-            if (userName != "eli") {
-                console.log("hi");
-                $("#loginErrorMessage").show();
-            } else {
-                localStorage.setItem("name", userName);
-                window.location.href = "../Views/index.html";
+            var password = $("#inputPassword").val();
+            if (userName == "" || password == "") {
+                alert("Please enter userName and password.");
+                return;
             }
+      
+            $("#loader").show();
+            var apiuri = "/api/Users/Login/" + userName + "/" + password;
+            $.get(apiuri).done(function (response, status) {
+
+                sessionStorage.setItem("name", userName);
+                window.location.href = "../Views/index.html";
+                $("#loader").hide();
+            }).fail(function (response, status) {
+                $("#loader").hide();
+                $("#loginErrorMessage").show();
+            });
         }
     </script>
 </body>

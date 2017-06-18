@@ -25,7 +25,10 @@
                 <li><a href="#">User Rankings</a></li>
                 <li id="register"><a href="../Views/SignIn.html">Register</a></li>
                 <li id="login"><a href="/Views/Login.html">Login</a></li>
-                <li id="logout"><a href="#">Log out</a></li>
+                <!-- <li id="logout"><a href="#">Log out</a></li>-->
+                <li  id="logout">
+                    <button class="btn btn-default navbar-btn" onclick="logOut()">Log out</button>
+                </li>
             </ul>
             <div id="helloMessage" class="navbar-header">
                 <a id="msg" class="navbar-brand"></a>
@@ -35,11 +38,14 @@
     </nav>
 
     <script>
-        
+        function logOut() {
+            sessionStorage.removeItem("name");
+            window.location.href = "../Views/index.html";
+        }
+
         $('#logout').hide();
         var name = sessionStorage.getItem("name");
         if (name !== "null") {
-            console.log(name);
             $('#register').remove();
             $('#login').remove();
             $('#logout').show();

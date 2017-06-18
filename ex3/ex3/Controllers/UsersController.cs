@@ -80,6 +80,22 @@ namespace ex3.Controllers
             return BadRequest();
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
+
+        // GET: api/Users
+        [Route("api/Users/login/{userName}/{password}")]
+        [HttpGet]
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult Login(string userName, string password)
+        {
+            string hashedPassowrd = ComputeHash(password);
+            IEnumerable<Users> existingUsers = db.Users.Where(row => row.UserName == userName && row.EncryptedPassword == hashedPassowrd);
+            if (existingUsers.Count()!=0)
+            {
+                return Ok(existingUsers.ElementAt(0));
+            }
+            return NotFound();
+            //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+        }
         /*
 // GET: api/Users/5
 [ResponseType(typeof(Users))]
