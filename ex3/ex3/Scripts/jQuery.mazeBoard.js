@@ -112,12 +112,23 @@
                 if (pos['row'] == exitRow && pos['col'] == exitCol) {
                     alert("you have won");
                 }
+                return true;
+            } else {
+                return false;
             }
         }
     }
 
+    function cleanPlayerImage() {
+        var cellWidth = canvasElement.width / cols;
+        var cellHeight = canvasElement.height / rows;
+        var ctx = $(canvasElement).data("canvasContext");
+        var pos = $(canvasElement).data("position");
+        //ctx.clearRect(pos['col'] * cellWidth, pos['row'] * cellHeight, cellWidth, cellHeight);
+    }
 
     function reDraw() {
+
         //canvasContext.clearRect(0, 0, canvasElement.width, canvasElement.height);
         var ctx = $(canvasElement).data("canvasContext");
         var exitimg = new Image();
@@ -174,7 +185,8 @@
 
     $.fn.playerMoved = function (e) {
         canvasElement = this[0];
-        handleKeyPress(e);
+        var moved = handleKeyPress(e);
+        return moved;
     }
 
     $.fn.initialize = function (mazeData, initRow, initCol, finishRow, finishCol, playerImg, exitImg, callback) {
@@ -250,6 +262,31 @@
             clearInterval(timer)
             movementAllowed = true;
         }
+    }
+
+    $.fn.oponentMoved = function (direction) {
+        canvasElement = this[0];
+        reDraw();
+        //cleanPlayerImage();
+
+        var pos = $(canvasElement).data("position");
+
+        switch (direction) {
+            case "0": //left
+                pos['col'] = pos['col'] - 1;
+                break;
+            case "1": //right
+                pos['col'] = pos['col'] + 1;
+                break;
+            case "2": //up
+                pos['row'] = pos['row'] - 1;
+                break;
+            case "3": //down
+                pos['row'] = pos['row'] + 1;
+                break;
+        }
+        reDraw()
+      
     }
 
     $.fn.drawMaze = function () {
