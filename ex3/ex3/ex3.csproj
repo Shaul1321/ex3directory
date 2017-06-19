@@ -161,6 +161,8 @@
     <Content Include="Scripts\jQuery.mazeBoard.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.js" />
     <Content Include="Scripts\jquery.signalR-2.2.2.min.js" />
+    <Content Include="Scripts\SinglePlayer\SinglePlayerOnReady.js" />
+    <Content Include="Scripts\SinglePlayer\SinglePlayer.js" />
     <Content Include="Views\arrow.png" />
     <Content Include="Views\arrow2.png" />
     <Content Include="Views\HtmlPage1.html" />

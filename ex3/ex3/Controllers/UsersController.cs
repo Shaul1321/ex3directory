@@ -52,12 +52,11 @@ namespace ex3.Controllers
             Users user = new Users { UserName = userName, EncryptedPassword = hashedPassowrd, SigningDate= currentTime, Wins=0, Loses=0 };
             db.Users.Add(user);
             db.SaveChanges();
-            
             return Ok(user);
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-
+    
         // GET: api/Users
         [Route("api/Users/updateScore/{userName}/{won}")]
         [HttpGet]

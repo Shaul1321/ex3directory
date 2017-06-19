@@ -18,63 +18,64 @@
 </head>
 
 <body>
-
     <div id="menuBar"> </div>
-    <h1  class="page-header" id="headline">   Multi Player</h1>
-    <div id="boards">
-        <canvas id="myCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
-        <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
-    </div> 
-   <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
 
-    <div id="options">
-        <div class="col-xs-2">
-            <div class="form-group">
-                <h3>Join existing game</h3>
-                <label for="gameSelect" class="col-2 col-form-label">Games</label>
-                <div>
-                    <select id="gameSelect" class="selectpicker col-3 col-form-label"></select>
-                </div>
-                <br />
-                <div>
-                    <span class="input-group-btn">
-                        <button id="btnJoin" class="btn btn-primary" type="button" onclick="joinGame()">Join Game</button>
-                    </span>
-                </div>
-
-                <h3>Start new game</h3>
-                <label for="mazeName" class="col-2 col-form-label">Name</label>
-                <div class="col-10">
-                    <input class="form-control" type="text" value="myMaze" id="mazeName">
-                </div>
-
-                <label for="mazeRows" class="col-2 col-form-label">Rows</label>
-                <div class="col-10">
-                    <input class="form-control" type="number" value="10" id="mazeRows">
-                </div>
-
-                <label for="mazeCols" class="col-2 col-form-label">Cols</label>
-                <div class="col-10">
-                    <input class="form-control" type="number" value="10" id="mazeCols">
-                </div>
-
-                <br />
-                <div>
-                    <span class="input-group-btn">
-                        <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame2()">Start Game</button>
-                    </span>
-                </div>
-                <br />
-                <button id="btnwaiting" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Waiting for oponent...</button>
-            </div>
-
+        <h1 class="page-header" id="headline">   Multi Player</h1>
+        <div id="boards">
+            <canvas id="myCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
+            <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
         </div>
-    </div>
+        <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
 
+        <div id="options">
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <h3>Join existing game</h3>
+                    <label for="gameSelect" class="col-2 col-form-label">Games</label>
+                    <div>
+                        <select id="gameSelect" class="selectpicker col-3 col-form-label"></select>
+                    </div>
+                    <br />
+                    <div>
+                        <span class="input-group-btn">
+                            <button id="btnJoin" class="btn btn-primary" type="button" onclick="joinGame()">Join Game</button>
+                        </span>
+                    </div>
+
+                    <h3>Start new game</h3>
+                    <label for="mazeName" class="col-2 col-form-label">Name</label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" value="myMaze" id="mazeName">
+                    </div>
+
+                    <label for="mazeRows" class="col-2 col-form-label">Rows</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="10" id="mazeRows">
+                    </div>
+
+                    <label for="mazeCols" class="col-2 col-form-label">Cols</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="10" id="mazeCols">
+                    </div>
+
+                    <br />
+                    <div>
+                        <span class="input-group-btn">
+                            <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame2()">Start Game</button>
+                        </span>
+                    </div>
+                    <br />
+                    <button id="btnwaiting" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Waiting for oponent...</button>
+                </div>
+
+            </div>
+        </div>
 
 
 
     <style>
+
+
         .glyphicon-refresh-animate {
             -animation: spin .7s infinite linear;
             -ms-animation: spin .7s infinite linear;

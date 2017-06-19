@@ -10,12 +10,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   
     <script src="../Scripts/jQuery.mazeBoard.js"></script>
+    <script src="../Scripts/SinglePlayer/SinglePlayer.js"></script>
+    <script src="../Scripts/SinglePlayer/SinglePlayerOnReady.js"></script>
 </head>
 
 <body>
-
-    <div id="menuBar"> </div>
-    <h1 class="page-header" id="headline">   Single Player</h1>
+    <div id="SetingsAndHeaders">
+        <div id="menuBar"> </div>
+        <h1 class="page-header" id="headline">   Single Player</h1>
 
 
         <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
@@ -44,19 +46,11 @@
                         <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
                     </span>
                 </div>
-  
-           <div  id="argumentsError" class="alert alert-info">
+
+                <div id="argumentsError" class="alert alert-info">
                     <strong>Error! </strong>Rows and Cols should be in the range 2-100.
                 </div>
 
-     
-
-                <!--
-                <div id="argumentsError" class=" alert alert-error alert-block" style="width:200px">
-                    <span class="close" data-dismiss="alert">&times;</span>
-                    <span>Rows and Cols should be in the range 2-100.</span>
-                </div>
-                     -->
                 <br />
                 <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
                 <br />
@@ -73,235 +67,19 @@
                         <button id="btnSolve" class="btn btn-primary" type="button" onclick="solveGame()">Solve</button>
                     </span>
                 </div>
-                </div>
+            </div>
 
         </div>
-
-
-
-
-
-    <style>
-
-        
-        .glyphicon-refresh-animate {
-            -animation: spin .7s infinite linear;
-            -ms-animation: spin .7s infinite linear;
-            -webkit-animation: spinw .7s infinite linear;
-            -moz-animation: spinm .7s infinite linear;
-        }
-
-        @keyframes spin {
-            from {
-                transform: scale(1) rotate(0deg);
-            }
-
-            to {
-                transform: scale(1) rotate(360deg);
-            }
-        }
-
-        @-webkit-keyframes spinw {
-            from {
-                -webkit-transform: rotate(0deg);
-            }
-
-            to {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @-moz-keyframes spinm {
-            from {
-                -moz-transform: rotate(0deg);
-            }
-
-            to {
-                -moz-transform: rotate(360deg);
-            }
-        }
-
-    </style>
-
-
-    <script>
-
-
-        $("#menuBar").load("/Views/UpperMenu.html");
-        $("#myCanvas").hide();
-        $("#btnloading").hide();
-        $("#loader").hide();
-        $("#argumentsError").hide();
-        
-        var rows = sessionStorage.getItem("rows");
-        var cols = sessionStorage.getItem("cols");
-        var algo = sessionStorage.getItem("algo");
-        if (rows !== null && cols !== null) {
-            $("#mazeRows").val(rows);
-            $("#mazeCols").val(cols);
-            $('#algorithmSelect').val(algo);
-        }
-    </script>
-
-    <script>
-
-        var nameOfMazeGenerated;
-        var mazeBoard;
-
-        function solveGame() {
-            $('#btnSolve').addClass('disabled');
-            var algorithm = $("#algorithmSelect").val();
-            var algoCode = 0;
-            if (algorithm == "DFS") {
-                var algoCode = 1;
-            }
-            var apiuri = "/api/SinglePlayer/" + nameOfMazeGenerated + "/" + algoCode;
-            $.get(apiuri).done(function (solutionJson, status) {
-                var solutionString = solutionJson.Solution;
-                var solutionArray = new Array(solutionString.length);
-                for (var i = 0; i < solutionString.length; i++) {
-                    solutionArray[i] = solutionString[i];
-                }
-                var board = $("#myCanvas").solve(solutionArray);
-            }).fail(function () {
-                alert("No connection to server.");
-            });
-        }
-
-
-        function startGame() {
-
-                var rows = $("#mazeRows").val();
-                var cols = $("#mazeCols").val();
-                var mazeName = $("#mazeName").val();
-
-                if (rows < 2 || cols < 2 || rows>100 || cols>100) {
-                    $("#argumentsError").show();
-                    return;
-                }
-
-                $('#btnStart').addClass('disabled');
-                $('#btnSolve').removeClass('disabled');
-                //$("#btnloading").show();
-                $("#loader").show();
-                $("#argumentsError").hide();
-                nameOfMazeGenerated = mazeName;
-                var apiuri = "/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
-                $.post(apiuri).done(function (mazeJson) {
-
-                    //when done load the maze propertieis from the json
-                    var mazeString = mazeJson.Maze;
-                    
-                    //console.log("json: " + mazeString);
-                    var startRow = mazeJson.Start.Row;
-                    var startCol = mazeJson.Start.Col;
-                    var endRow = mazeJson.End.Row;
-                    var endCol = mazeJson.End.Col;
-
-                    var rows = mazeJson.Rows;
-                    var cols = mazeJson.Cols;
-                    var mazeArray = new Array(rows);
-                    for (var i = 0; i < rows; i++) {
-                        mazeArray[i] = new Array(cols);
-                    }
-
-                    //fill maze board array
-                    for (var i = 0; i < rows; i++) {
-                        for (var j = 0; j < cols; j++) {
-                            mazeArray[i][j] = 1;
-                            if (mazeString[i * cols + j] === "0") {
-                                mazeArray[i][j] = 0;
-                            }
-                        }
-                    }
-
-                    //update the board
-                    var playerImage = "../Views/icon.png";
-                    var exitImage = "../Views/arrow.png"
-                    var oponentImage = "../Views/oponentIcon.png";
-                    mazeBoard = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage);
-                    mazeBoard = $("#myCanvas").drawMaze();
-
-                    $("#btnloading").hide();
-                    $("#loader").hide();
-                    $("#myCanvas").show();
-                });
-            }
-        
-        $(document).keydown(function (e) {
-            var key = e.which;
-            if (key == 37 || key == 38 || key == 39 || key==40){
-              e.preventDefault();
-              $("#myCanvas").playerMoved(e);
-            }
-            // prevent the default action (scroll / move caret)
-        });
-        
-  
-
-            function myFunction(event) {
-                var x = event.which || event.keyCode;
-                //alert(x);
-            }
-
-    </script>
-    <script> 
-            $(document).ready(function () {
-                //$('#btnloading').hide();
-
-                /*
-                var loadingImage = new Image();
-                loadingImage.src = "../Views/Loading_icon.gif";
-                ctx = $("#myCanvas").get(0).getContext("2d");
-                ctx.drawImage(loadingImage, 200, 200, 70, 70);
-                */
-
-                $('#btnSolve').addClass('disabled');
-                /*
-                var img = new Image();
-                img.onload = function () {
-                    alert("image is loaded");
-                    $(img).appendTo('body');
-                }
-                //img.src = "http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg";
-                img.src = "../Views/mazeIcon.png";
-                $.getJSON("http://localhost:4714/api/SinglePlayer").done(function (data) {
-                    console.log(data);
-                })
-                */
-                /*
-                //send asynchronous ajax post request for a maze
-                var apiuri = "http://localhost:4714/api/SinglePlayer/mymaze/15/15"
-                $.post(apiuri).done(function (mazeJson) {
-                    //when done load the maze propertieis from the json
-                    var mazeString = mazeJson.Maze;
-                    console.log("json: " + mazeString);
-                    var rows = mazeJson.Rows;
-                    var cols = mazeJson.Cols;
-                    var mazeArray = new Array(rows);
-                    for (var i = 0; i < rows; i++) {
-                        mazeArray[i] = new Array(cols);
-                    }
-                    //fill maze board array
-                    for (var i = 0; i < rows; i++) {
-                        for (var j = 0; j < cols; j++) {
-                            mazeArray[i][j] = 1;
-                            if (mazeString[i * rows + j] == '0') {
-                                mazeArray[i][j] = 0;
-                            }
-                        }
-                    }
-                    //update the board
-                    $("#myCanvas").mazeBoard(mazeArray);
-                });
-                var maze = [[0, 1, 0, 1, 0], [0, 1, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 0, 0, 0]];
-
-           */
-            })
-                
-        </script>
-
-
+    </div>
 </body>
 
 </html>
+
+
+<style>
+    #myCanvas {
+    }
+    #SetingsAndHeaders{
+        float: left;
+    }
+</style>
