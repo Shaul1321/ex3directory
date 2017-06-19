@@ -153,6 +153,7 @@
     <Content Include="Views\multiPlayer.css" />
     <Content Include="Views\Multiplayer.html" />
     <Content Include="Views\oponentIcon.png" />
+    <Content Include="Views\Ranking.css" />
     <Content Include="Views\Ranking.html" />
     <Content Include="Views\Settings.html" />
     <Content Include="Views\SignIn.html" />

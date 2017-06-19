@@ -6,68 +6,86 @@
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <script src="../Scripts/jquery-3.1.1.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
 </head>
 
 <body>
-    <div id="menuBar"> </div>
-    <h1 class="page-header" id="headline">   Settings</h1>
-    <div class="alert alert-info">
-        <strong></strong> Please enter your default values for number of rows, columns and solver algorithm.
-    </div>
-    <div class="col-xs-2">
-        <label for="mazeRows" class="col-2 col-form-label">Rows</label>
-        <div class="col-10">
-            <input class="form-control" type="number" min="2" max="100" value="10" id="mazeRows">
+    <form id="mainForm">
+        <div id="menuBar"> </div>
+        <h1 class="page-header" id="headline">   Settings</h1>
+        <div class="alert alert-info">
+            <strong></strong> Please enter your default values for number of rows, columns and solver algorithm.
         </div>
-
-        <label for="mazeCols" class="col-2 col-form-label">Cols</label>
-        <div class="col-10">
-            <input class="form-control" type="number" min="2" max="100" value="10" id="mazeCols">
-        </div>
-
-        <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
-        <div>
-            <select id="algorithmSelect" class="selectpicker col-2 col-form-label">
-                <option>DFS</option>
-                <option>BFS</option>
-            </select>
-        </div>
-
-        <br />
-        <div>
-            <span class="input-group-btn">
-                <button id="btnSave" class="btn btn-primary" type="button" onclick="saveSettings()">Save</button>
-            </span>
-        </div>
-
-        <div class="container">
-            <h1>This is a test</h1>
-            <div id="alert_message" class="alert" style="width:200px">
-                <span class="close" data-dismiss="alert">&times;</span>
-                <span><strong>Atention!</strong> Responsive Design with Twitter Bootstrap.</span>
+        <div class="col-xs-2">
+            <label for="mazeRows" class="col-2 col-form-label">Rows</label>
+            <div class="col-10">
+                <input class="form-control" type="number" min="2" max="100" value="10" id="mazeRows">
             </div>
+
+            <label for="mazeCols" class="col-2 col-form-label">Cols</label>
+            <div class="col-10">
+                <input class="form-control" type="number" min="2" max="100" value="10" id="mazeCols">
+            </div>
+
+            <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
+            <div>
+                <select id="algorithmSelect" class="selectpicker col-2 col-form-label">
+                    <option>DFS</option>
+                    <option>BFS</option>
+                </select>
+            </div>
+
+            <br />
+            <div>
+                <span class="input-group-btn">
+                    <button id="btnSave" class="btn btn-primary" type="button" onclick="saveSettings()">Save</button>
+                </span>
+            </div>
+
         </div>
-      </div>
+    </form>
 </body>
 </html>
 
 <script>
-    window.setTimeout(function () {
-        $("#alert_message").fadeTo(500, 0).slideUp(500, function () {
-            $(this).remove();
-        });
-    }, 3000);
 
+    $("#mainForm").validate();
+
+    $.validator.addMethod('integer',
+        function (value) {
+            return Number.isInteger(value);
+        }, 'Enter an integer.');
+
+    $('#mainForm').validate({ // initialize the plugin
+        rules: {
+            mazeRows: {
+                integer: true,
+                required: true,
+                number: true,
+                digits: true,
+            },
+            mazeCols: {
+                required: true,
+                number: true,
+                digits: true,
+            }
+        }
+    });
+    
     $("#menuBar").load("/Views/UpperMenu.html");
+
     function saveSettings() {
 
         var rows = $("#mazeRows").val();
         var cols = $("#mazeCols").val();
         var algo = $("#algorithmSelect").val();
+        alert("yay");
         if (rows >= 2 && rows <= 100 && cols >= 2 && cols <= 100) {
             sessionStorage.setItem("rows", rows);
             sessionStorage.setItem("cols", rows);  
             sessionStorage.setItem("algo", algo); 
-        }
+        } 
     }
 </script>
