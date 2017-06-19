@@ -191,7 +191,8 @@
 
                     //when done load the maze propertieis from the json
                     var mazeString = mazeJson.Maze;
-
+                    alert(mazeString);
+                    
                     //console.log("json: " + mazeString);
                     var startRow = mazeJson.Start.Row;
                     var startCol = mazeJson.Start.Col;
@@ -209,7 +210,7 @@
                     for (var i = 0; i < rows; i++) {
                         for (var j = 0; j < cols; j++) {
                             mazeArray[i][j] = 1;
-                            if (mazeString[i * rows + j] == '0') {
+                            if (mazeString[i * cols + j] === "0") {
                                 mazeArray[i][j] = 0;
                             }
                         }

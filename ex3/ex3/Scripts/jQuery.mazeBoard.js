@@ -280,12 +280,12 @@
 
         img.onload = function () {;
             //canvasContext.drawImage(img, position['col'] * cellWidth, position['row'] * cellHeight, cellWidth, cellHeight);
-            console.log("I DRAW AN IMAGE " + img.src + " ON context " + ctx);
+            //console.log("I DRAW AN IMAGE " + img.src + " ON context " + ctx);
             pos = $(canvasElement).data("position"); 
             ctx.drawImage(img, pos['col'] * cellWidth, pos['row'] * cellHeight, cellWidth, cellHeight);
         }
         exitimg.onload = function () {
-            ctx.drawImage(exitimg, exitCol * cellHeight, exitRow * cellWidth, cellWidth, cellHeight);
+            ctx.drawImage(exitimg, exitCol * cellWidth, exitRow * cellHeight, cellWidth, cellHeight);
         }
 
         console.log(playerIcon);
