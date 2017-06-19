@@ -21,12 +21,12 @@
         <div class="col-xs-2">
             <label for="mazeRows" class="col-2 col-form-label">Rows</label>
             <div class="col-10">
-                <input class="form-control" type="number" min="2" max="100" value="10" id="mazeRows">
+                <input class="form-control" type="number" min="2" max="100" value="10" id="mazeRows" required>
             </div>
 
             <label for="mazeCols" class="col-2 col-form-label">Cols</label>
             <div class="col-10">
-                <input class="form-control" type="number" min="2" max="100" value="10" id="mazeCols">
+                <input class="form-control" type="number" min="2" max="100" value="10" id="mazeCols" required>
             </div>
 
             <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
@@ -55,18 +55,20 @@
 
     $.validator.addMethod('integer',
         function (value) {
-            return Number.isInteger(value);
+            return false;
         }, 'Enter an integer.');
 
     $('#mainForm').validate({ // initialize the plugin
         rules: {
             mazeRows: {
+                minlength: 1,
                 integer: true,
                 required: true,
                 number: true,
                 digits: true,
             },
             mazeCols: {
+                minlength: 1,
                 required: true,
                 number: true,
                 digits: true,
@@ -81,8 +83,9 @@
         var rows = $("#mazeRows").val();
         var cols = $("#mazeCols").val();
         var algo = $("#algorithmSelect").val();
-        alert("yay");
-        if (rows >= 2 && rows <= 100 && cols >= 2 && cols <= 100) {
+
+        if (rows >= 2 && rows <= 100 && cols >= 2 && cols <= 100 && $('#mainForm').valid()) {
+            alert("yay");
             sessionStorage.setItem("rows", rows);
             sessionStorage.setItem("cols", rows);  
             sessionStorage.setItem("algo", algo); 
