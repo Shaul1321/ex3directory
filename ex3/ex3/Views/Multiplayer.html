@@ -116,6 +116,8 @@
 
 
     <script>
+        var name_of_maze;
+
         var messagesHub;
         //connect to hub
         (function () {
@@ -133,10 +135,11 @@
                 $('#btnwaiting').hide();
                 initialzieBoards(serializedMaze);
             }
+            
+            //$.connection.hub.start().done(function () {
+            //    messagesHub.server.connect(sessionStorage['name']);
+            //});
 
-            $.connection.hub.start().done(function () {
-                messagesHub.server.connect(sessionStorage['name']);
-            });
         })();
 
         $(document).keydown(function (e) {
@@ -157,7 +160,7 @@
                     break;
             }
             if (moved) {
-                messagesHub.server.notifyPlayerHasMoved(sessionStorage['name'], direction);
+                messagesHub.server.notifyPlayerHasMoved(sessionStorage['name'], name_of_maze, direction);
             }
             //$("#oponentCanvas").playerMoved(e);
             //e.preventDefault(); // prevent the default action (scroll / move caret)
@@ -187,10 +190,17 @@
         });
 
         function startGame2() {
+            $.connection.hub.start().done(function () {
+                alert("user " + sessionStorage['name'] + " has connected.");
+                var mazeName = $("#mazeName").val();
+                messagesHub.server.connect(sessionStorage['name'], mazeName);
+            });
+
             $('#btnStart').addClass('disabled');
             var rows = $("#mazeRows").val();
             var cols = $("#mazeCols").val();
             var mazeName = $("#mazeName").val();
+            name_of_maze = mazeName;
             var apiuri = "http://localhost:4714/api/MultiPlayer/start/" + mazeName + "/" + rows +"/"+cols;
             $.get(apiuri).done(function (solutionJson) {
                 return;
@@ -205,6 +215,8 @@
         function oponentJoined() {
 
         }
+
+
 
         function initialzieBoards(mazeJson) {
             var mazeString = mazeJson.Maze;
@@ -245,12 +257,22 @@
         }
 
         function joinGame() {
-            var mazeToJoin = $("#gameSelect").val();
-            var apiuri = "http://localhost:4714/api/MultiPlayer/join/" + mazeToJoin;
-            $.get(apiuri).done(function (mazeJson) {
-                initialzieBoards(mazeJson);
-                messagesHub.server.notifyGameStarted(sessionStorage['name'], mazeJson);
+            alert("yayyay0");
+            $.connection.hub.start().done(function () {                
+                var mazeToJoin = $("#gameSelect").val();
+                messagesHub.server.connect(sessionStorage['name'], mazeToJoin);
+                name_of_maze = mazeToJoin;
+                var apiuri = "http://localhost:4714/api/MultiPlayer/join/" + mazeToJoin;
+                $.get(apiuri).done(function (mazeJson) {
+                    initialzieBoards(mazeJson);
+                    alert("yayyay1");
+                    alert(mazeToJoin);
+                    messagesHub.server.notifyGameStarted(sessionStorage['name'], mazeToJoin, mazeJson);
+                    alert("yayyay");
+                });
             });
+
+
         }
     </script>
 

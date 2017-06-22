@@ -15,6 +15,9 @@ namespace ex3.Controllers
 new ConcurrentDictionary<string, string>();
         private static ConcurrentDictionary<string, string> oponentsMapping =
 new ConcurrentDictionary<string, string>();
+        private static ConcurrentDictionary<string, List<string>> mazeNameToPlayersMapping =
+new ConcurrentDictionary<string, List<string>>();
+
         private static string player1;
         private static string player2;
         private static int numPlayers=0;
@@ -26,47 +29,52 @@ new ConcurrentDictionary<string, string>();
 
 
 
-        public void Connect(string name)
+        public void Connect(string userName, string mazeName)
         {
-            connectedUsers[name] = Context.ConnectionId;
+            if (!mazeNameToPlayersMapping.ContainsKey(mazeName))
+            {
+                mazeNameToPlayersMapping[mazeName] = new List<string>();                
+            }
+            mazeNameToPlayersMapping[mazeName].Add(userName);
+            connectedUsers[userName] = Context.ConnectionId;
             numPlayers++;
-            if (numPlayers == 1)
-            {
-                player1 = name;
-            }
-            else
-            {
-                player2 = name;
-                oponentsMapping[player1] = player2;
-                oponentsMapping[player2] = player1;
-            }
-
         }
 
-        public void notifyPlayerHasMoved(string name, string direction)
+        public void notifyPlayerHasMoved(string userName, string mazeName, string direction)
         {
 
-            string oponentName = oponentsMapping[name];
+            string oponentName = getOponent(userName, mazeName);
             string recipientId = connectedUsers[oponentName];
-            var myname = name;
 
             if (recipientId == null)
                 return;
             Clients.Client(recipientId).oponentMoved(direction);
         }
 
-        public void notifyGameStarted(string name, JObject serializedMaze)
+        private string getOponent(string userName, string mazeName)
         {
-            Console.WriteLine("GAME HAS BEEN STARTED");
-            string oponentName = oponentsMapping[name];
+            List<string> players = mazeNameToPlayersMapping[mazeName];
+            string oponentName;
+            if (players.ElementAt(0).Equals(userName))
+            {
+                oponentName = players.ElementAt(1);
+            }
+            else
+            {
+                oponentName = players.ElementAt(0);
+            }
+            return oponentName;
+        }
+
+        public void notifyGameStarted(string userName, string mazeName, JObject serializedMaze)
+        {
+
+            List<string> players = mazeNameToPlayersMapping[mazeName];
+            string oponentName = getOponent(userName, mazeName);
             string recipientId = connectedUsers[oponentName];
             if (recipientId == null)
                 return;
-            var namename = oponentName;
-            var oponent = oponentsMapping[name];
-            var id = recipientId;
             Clients.Client(recipientId).oponentJoined(serializedMaze);
-        }
-        
+        }        
     }
 }
