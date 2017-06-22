@@ -22,6 +22,11 @@ function solveGame() {
     });
 }
 
+function hasWon() {
+    alert("You have won! Press ok to return to the main page.");
+    window.location.href = "../Views/index.html";
+}
+
 
 function startGame() {
 
@@ -73,7 +78,7 @@ function startGame() {
         var playerImage = "../Views/icon.png";
         var exitImage = "../Views/arrow.png"
         var oponentImage = "../Views/oponentIcon.png";
-        $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage);
+        $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage, hasWon);
         $("#myCanvas").drawMaze();
 
         $("#btnloading").hide();

@@ -4,7 +4,6 @@
     //     , exitRow, exitCol, playerImage, exitImage, enabled, callBack) {
      
     
-    var position;
     var canvasElement;
     var canvasContext;
     var mazeArray;
@@ -22,7 +21,6 @@
     var exitIcon;
     var oponentIcon;
     var exitIcon2;
-    var isOponent;
 
     /*
     $(this).keydown(function (e) {
@@ -110,7 +108,7 @@
                 $(canvasElement).data("position", { row: newRow, col: newCol });
                 var pos = $(canvasElement).data("position");
                 if (pos['row'] == exitRow && pos['col'] == exitCol) {
-                    alert("you have won");
+                    callbackFunction();
                 }
                 return true;
             } else {
@@ -193,7 +191,6 @@
         console.log("mazeData is " + mazeData);
         console.log("exit is row:" + finishRow + " col:" + finishCol);
         console.log("start is row:" + initRow + " col:" + initCol);
-        position = { 'row': 0, 'col': 0 };
         mazeArray = mazeData;
         element = $(this)[0];
         canvasElement = element;
@@ -210,12 +207,13 @@
         $(canvasElement).data("player_icon", playerImg);
         $(canvasElement).data("position", { row: initRow, col: initCol });
         $(canvasElement).data("canvasContext", context);
+        $(canvasElement).data("start", { row: initRow, col: initCol });
+        $(canvasElement).data("end", { row: exitRow, col: exitCol });
         //oponentIcon = oponentImg;
         exitIcon = exitImg;
-        position['row'] = initRow;
-        position['col'] = initCol;
+
         //reDraw();
-        //this.callbackFunction = callBack;
+        callbackFunction = callback;
         console.log("CANVAS CONTEXT IS " + canvasContext + "AND ELEMENT IS " + canvasElement.id);
         console.log(this);
         console.log("TRYTRY " + this);
@@ -228,9 +226,7 @@
         reDraw();
         movementAllowed = false;
         $(canvasElement).data("position", { row: startRow, col: startCol });
-        
-        console.log("solution is " + ss);
-        console.log("exitRow is " + exitRow + "and exitcol is " + exitCol);
+
         solutionArray = ss;
         timer = setInterval(animate, 300);
         animationIndex = 0;

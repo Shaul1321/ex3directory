@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Settings</title>
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -68,13 +68,14 @@
     var rules = {
         rules: {
             mazeRows: {
-                digits: true,
+                //digits: true,
                 required: true,
-                number: true,
+                //number: true,
                 range: [13, 23]
             },
             mazeCols: {
-                digits: true
+                digits: true,
+                required: true
             }
         }
     };
@@ -95,10 +96,13 @@
             sessionStorage.setItem("cols", rows);  
             sessionStorage.setItem("algo", algo); 
         } else {
+            alert("nothing happened. " + $('#mainForm').valid() + Number.isInteger(rows) + Number.isInteger(cols));
             var t = $('#mainForm').valid();
             //alert(t);
            // alert("error");
         }
+        } else {
+            alert("error");
         }
     }
 </script>

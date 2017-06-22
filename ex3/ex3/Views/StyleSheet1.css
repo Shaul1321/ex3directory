@@ -15,8 +15,9 @@ h1{
 }
 
 #main {
+    float: left;
     background-color: #F0FFFF;
-    margin: 0 auto;
+    margin: 20px;
     font-family: Century Gothic;
     width: 800px;
 }
