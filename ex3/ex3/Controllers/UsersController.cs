@@ -56,7 +56,23 @@ namespace ex3.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-    
+        // GET: api/Users
+        [Route("api/Users/delete")]
+        [HttpGet]
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult DeleteUser()
+        {
+
+            IQueryable<Users> existingUsers = db.Users.Where(row => true);
+            foreach (Users u in existingUsers) {
+              db.Users.Remove(u);
+            }
+            db.SaveChanges();
+            return Ok(existingUsers);
+            //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+        }
+
+
         // GET: api/Users
         [Route("api/Users/updateScore/{userName}/{won}")]
         [HttpGet]
