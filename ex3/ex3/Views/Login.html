@@ -15,6 +15,7 @@
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+    <script src="../Scripts/inputForms/Login.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 </head>
 
@@ -43,73 +44,8 @@
             <img id="loader" src="../Views/Loading_icon.gif">
         </div>
     </div>
-    
+  
 
-    <!-- /container -->
-    <!--
-    <div class="center-block">
-        <div class="col-md-2 col-md-offset-0">
-            <form class="form-signin">
-                <h2 class="form-signin-heading">Login</h2>
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Remember me
-                    </label>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            </form>
-        </div>
-    </div>
-    -->
-
-    <script>
-
-        $(document).ready(function () {
-            var rules = {
-                userName: {
-                    required: true,
-                },
-                password: {
-                    required: true,
-                }
-            };
-            $('#loginForm').validate({
-                rules: rules
-            })
-        });
-
-
-        $("#menuBar").load("/Views/UpperMenu.html");
-        $("#loginErrorMessage").hide();
-        $("#loader").hide();
-        function logIn() {
-            if ($("#loginForm").valid()) {
-                $("#loginErrorMessage").hide();
-                var userName = $("#inputName").val();
-                var password = $("#inputPassword").val();
-                //if (userName == "" || password == "") {
-                //   alert("Please enter userName and password.");
-                //   return;
-                //}
-
-                $("#loader").show();
-                var apiuri = "/api/Users/Login/" + userName + "/" + password;
-                $.get(apiuri).done(function (response, status) {
-                    alert("yay");
-                    sessionStorage.setItem("name", userName);
-                    window.location.href = "../Views/index.html";
-                    $("#loader").hide();
-                }).fail(function (response, status) {
-                    $("#loader").hide();
-                    $("#loginErrorMessage").show();
-                });
-            }
-        }
-    </script>
 </body>
 </html>
 

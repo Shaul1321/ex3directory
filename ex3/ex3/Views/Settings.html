@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
-
+    <script src="../Scripts/inputForms/Settings.js"></script>
 </head>
 
 <body>
@@ -49,62 +49,3 @@
     </form>
 </body>
 </html>
-
-<script>
-
-    //$("#mainForm").validate();
-
-
-    //$.validator.addMethod('integer',
-    //    function (value, element) {
-    //        return Number.isInteger(value);
-    //    }, 'Enter an integer.');
-
-
-    //$.validator.addClassRules({
-    //    integer: { integer: true }
-    //});
-
-    $(document).ready(function () {
-        var rules = {
-            mazeRows: {
-                required: true,
-                number: true,
-                digits: true,
-                range: [2, 100]
-            },
-            mazeCols: {
-                required: true,
-                number: true,
-                digits: true,
-                range: [2, 100]
-            }
-        };
-        $('#mainForm').validate({
-            rules: ruless
-        })
-    });
-
-
-    //$('#mainForm').validate({ rules })
-
-
-    
-    $("#menuBar").load("/Views/UpperMenu.html");
-
-    function saveSettings() {
-
-        if ($("#mainForm").valid()) {
-            var rows = $("#mazeRows").val();
-            var cols = $("#mazeCols").val();
-            var algo = $("#algorithmSelect").val();
-            sessionStorage.setItem("rows", rows);
-            sessionStorage.setItem("cols", rows);
-            sessionStorage.setItem("algo", algo);
-            alert("yes");
-        } else {
-            alert("nothing happened.");
-        }
-    }
-
-</script>

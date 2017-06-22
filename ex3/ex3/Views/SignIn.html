@@ -16,7 +16,9 @@
     <script src="../Scripts/jquery-3.1.1.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="../Scripts/inputForms/SignIn.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> 
+  
 </head>
 
 <body>
@@ -40,7 +42,7 @@
                 <label for="inputPassword2" class="sr-only">Renter Password</label>
                 <input type="password" id="inputPassword2" class="form-control" placeholder="Verify Password" name="repeat_password">
 
-                <button id="btnLogIn" onclick="signIn()" required class="btn btn-lg btn-primary btn-block" type="button" formnovalidate>Log in</button>
+                <button id="btnLogIn" onclick="signIn()" required class="btn btn-lg btn-primary btn-block" type="button" formnovalidate>Sign in</button>
                
             </form>
             <div id="passwordsMisMatch" class="alert alert-info">
@@ -73,73 +75,7 @@
     </div>
     -->
 
-    <script>
-
-        $(document).ready(function () {
-            var rules = {
-                userName: {
-                    required: true,
-                },
-                password: {
-                    required: true,
-                },
-                repeat_password: {
-                    required: true,
-                    equalTo: '#password',
-                },
-                email: {
-                    required: true,
-                    email: true,
-                }
-            };
-            $('#signForm').validate({
-                rules: rules, 
-                messages: {
-                    repeat_password:  {
-                        equalTo: "Please repeat the password accurately."
-                    }
-                }
-            })
-        });
-
-
-        $("#menuBar").load("/Views/UpperMenu.html");
-        $("#passwordsMisMatch").hide();
-        $("#userAlreadyExist").hide();
-        $("#loader").hide();
-
-        function yay() {
-            alert("hello");
-        }
-
-        
-        function signIn() {
-         if ($('#signForm').valid()){
-            var userName = $("#inputName").val();
-            var password = $("#inputPassword").val();
-            if (userName == "" || password == "") {
-                alert("Please enter userName and password.");
-                return;
-            }
-            var reenteredPassword = $("#inputPassword2").val();
-            if (reenteredPassword != password) {
-                $("#passwordsMisMatch").show();
-                return;
-            }
-            $("#loader").show();
-            var apiuri = "/api/Users/addUser/" + userName + "/" + password;
-            $.get(apiuri).done(function (response, status) {
-
-                sessionStorage.setItem("name", userName);
-                window.location.href = "../Views/index.html";
-                $("#loader").hide();
-            }).fail(function (response, status) {               
-                $("#loader").hide();
-                $("#userAlreadyExist").show();
-            });
-          }
-        }
-    </script>
+   
 </body>
 </html>
 
