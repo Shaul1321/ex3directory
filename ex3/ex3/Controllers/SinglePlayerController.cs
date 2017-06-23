@@ -11,18 +11,30 @@ using Newtonsoft.Json.Linq;
 
 namespace ex3.Controllers
 {
+    /// <summary>
+    /// offers web abi services for a singleplayer maze game
+    /// </summary>
     public class SinglePlayerController : ApiController
     {
         static private IModel mazeModel = new MyModel();
         //public IModel MazeModel { get => mazeModel; set => mazeModel = value; }
 
-        // GET: api/SinglePlayer
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
+        /// <summary>
+        /// solve a specific maze
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="algorithm"></param>
+        /// <returns>the serialized solution string</returns>
         // GET: api/SinglePlayer/5
         [Route("api/SinglePlayer/{name}/{algorithm}/")]
         [HttpGet]
@@ -33,7 +45,13 @@ namespace ex3.Controllers
             return mazeObj;
         }
 
-        // POST: api/SinglePlayer
+        /// <summary>
+        /// generates a new maze
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="rows"></param>
+        /// <param name="cols"></param>
+        /// <returns>a serialized maze object</returns>
         [Route("api/SinglePlayer/{name}/{rows}/{cols}")]
         //[Route("api/SinglePlayer/GenerataMazePost")]
         [HttpPost]

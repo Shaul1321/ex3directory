@@ -16,10 +16,21 @@ using Newtonsoft.Json.Linq;
 
 namespace ex3.Controllers
 {
+    /// <summary>
+    /// responsible for managaing the users table
+    /// </summary>
     public class UsersController : ApiController
     {
+        /// <summary>
+        /// a context to represent the db in the RAM
+        /// </summary>
         private ex3Context db = new ex3Context();
 
+        /// <summary>
+        /// an helper function for hashing a password
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         string ComputeHash(string input)
         {
             SHA1 sha = SHA1.Create();
@@ -30,25 +41,38 @@ namespace ex3.Controllers
         }
 
         // GET: api/Users
+        /// <summary>
+        /// returns a list of all users
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Users> GetUsers()
         {
             IEnumerable<Users> list = db.Users.Where(row => true);
             return list;
         }
 
-        // GET: api/Users
+        /// <summary>
+        /// adds a new user to the db
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [Route("api/Users/addUser/{userName}/{password}")]
         [HttpGet]
         [ResponseType(typeof(Users))]
         public IHttpActionResult AddUser(string userName, string password)
         {
+            //encrypt the password & check time
             string hashedPassowrd = ComputeHash(password);
             DateTime currentTime = DateTime.Now;
+            //check if user already exists
             IQueryable < Users > existingUsers = db.Users.Where(row => row.UserName == userName);
             if (existingUsers.Any())
             {
                 return BadRequest();
             }
+
+            //create a new row in the table
             Users user = new Users { UserName = userName, EncryptedPassword = hashedPassowrd, SigningDate= currentTime, Wins=0, Loses=0 };
             db.Users.Add(user);
             db.SaveChanges();
@@ -56,7 +80,10 @@ namespace ex3.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-        // GET: api/Users
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [Route("api/Users/delete")]
         [HttpGet]
         [ResponseType(typeof(Users))]
@@ -73,17 +100,23 @@ namespace ex3.Controllers
         }
 
 
-        // GET: api/Users
+        /// <summary>
+        /// update the score of the specific user after a win/lose
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="won">a boolean indicating if the user won or lost</param>
+        /// <returns></returns>
         [Route("api/Users/updateScore/{userName}/{won}")]
         [HttpGet]
         [ResponseType(typeof(Users))]
         public IHttpActionResult UpdateUserScore(string userName, Boolean won)
         {
-
+            //find the user in the db
             IEnumerable<Users> existingUsers = db.Users.Where(row => row.UserName == userName);
             if (existingUsers.Any())
             {
                 Users theUser = existingUsers.ElementAt(0);
+                //update his record
                 if (won) {
                     theUser.Wins += 1;
                 }
@@ -98,12 +131,18 @@ namespace ex3.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-        // GET: api/Users
+        /// <summary>
+        /// login to the server
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns>ok if user exists, else not found()</returns>
         [Route("api/Users/login/{userName}/{password}")]
         [HttpGet]
         [ResponseType(typeof(Users))]
         public IHttpActionResult Login(string userName, string password)
         {
+            //compare encrypted password with the record in the db
             string hashedPassowrd = ComputeHash(password);
             IEnumerable<Users> existingUsers = db.Users.Where(row => row.UserName == userName && row.EncryptedPassword == hashedPassowrd);
             if (existingUsers.Count()!=0)
