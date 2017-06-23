@@ -222,11 +222,16 @@ function joinGame() {
         var mazeToJoin = $("#gameSelect").val();
         messagesHub.server.connect(sessionStorage['name'], mazeToJoin);
         var apiuri = "http://localhost:4714/api/MultiPlayer/join/" + mazeToJoin;
-        $.get(apiuri).done(function (mazeJson) {
+        $.get(apiuri).done(function (mazeJson, status) {
+            if (status != "success") { return; }
+
+            $('#mazeRows').prop('disabled', true);
+            $('#mazeCols').prop('disabled', true);
+            $('#mazeName').prop('disabled', true);
             initialzieBoards(mazeJson);
             messagesHub.server.notifyGameStarted(sessionStorage['name'], mazeToJoin, mazeJson);
         });
-    });
+    }).fail(function(){alert("connection error")})
 
 
 }

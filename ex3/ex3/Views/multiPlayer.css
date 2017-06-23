@@ -1,9 +1,5 @@
-﻿#options {
-    float: left;
-}
-
-#boards {
-    float: initial;
+﻿#boards {
+    float: right;
 }
 
 #options{
