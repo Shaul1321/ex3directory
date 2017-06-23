@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SinglePlayer</title>
+    <script src="../../Scripts/jquery-3.1.1.min.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+    <script src="../../Scripts/jQuery.mazeBoard.js"></script>
+    <script src="../../Scripts/SinglePlayer/SinglePlayer.js"></script>
+    <script src="../../Scripts/SinglePlayer/SinglePlayerOnReady.js"></script>
+</head>
+
+<body>
+    <div id="SetingsAndHeaders">
+        <div id="menuBar"> </div>
+        <h1 class="page-header" id="headline">   Single Player</h1>
+
+
+        <canvas id="myCanvas" width="700" height="700" style=" border:1px solid #000000;"></canvas>
+        <img id="loader" src="images/Loading_icon.gif">
+
+        <div class="col-xs-3">
+            <form id="singlePlayer_arguments">
+                <div class="form-group">
+
+                    <label for="mazeName" class="col-2 col-form-label">Name</label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" value="myMaze" name="mazeName" id="mazeName">
+                    </div>
+
+                    <label for="mazeRows" class="col-2 col-form-label">Rows</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="10" name="mazeRows" id="mazeRows">
+                    </div>
+
+                    <label for="mazeCols" class="col-2 col-form-label">Cols</label>
+                    <div class="col-10">
+                        <input class="form-control" type="number" value="10" name="mazeCols" id="mazeCols">
+                    </div>
+
+                    <br />
+                    <div>
+                        <span class="input-group-btn">
+                            <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
+                        </span>
+                    </div>
+
+                    <div id="argumentsError" class="alert alert-info">
+                        <strong>Error! </strong>Rows and Cols should be in the range 2-100.
+                    </div>
+
+                    <br />
+                    <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
+                    <br />
+                    <label for="algorithmSelect" class="col-2 col-form-label">Algorithm</label>
+                    <div>
+                        <select id="algorithmSelect" class="selectpicker col-2 col-form-label">
+                            <option>DFS</option>
+                            <option>BFS</option>
+                        </select>
+                    </div>
+                    <br />
+                    <div>
+                        <span class="input-group-btn">
+                            <button id="btnSolve" class="btn btn-primary" type="button" onclick="solveGame()">Solve</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+
+<style>
+    #myCanvas {
+    }
+
+    #SetingsAndHeaders {
+        float: left;
+    }
+
+    .btn.round {
+        border-radius: 44px;
+    }
+</style>
+
+    

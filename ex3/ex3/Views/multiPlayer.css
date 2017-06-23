@@ -1,6 +1,11 @@
-﻿#boards{
-    float: right;
-   }
+﻿#options {
+    float: left;
+}
+
+#boards {
+    float: initial;
+}
+
 #options{
 }
 

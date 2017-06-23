@@ -1,6 +1,17 @@
 ﻿$(document).ready(function () {
-    $("#menuBar").load("/Views/UpperMenu.html");
+    $("#menuBar").load("../../Views/UpperMenu.html");
 
+    //load previously entered values if there are such
+    var rows = sessionStorage.getItem("rows");
+    var cols = sessionStorage.getItem("cols");
+    var algo = sessionStorage.getItem("algo");
+    if (rows !== null && cols !== null) {
+        $("#mazeRows").val(rows);
+        $("#mazeCols").val(cols);
+        $('#algorithmSelect').val(algo);
+    }
+
+    //set validation
     var rules = {
         mazeRows: {
             required: true,
@@ -29,7 +40,9 @@ function saveSettings() {
         var cols = $("#mazeCols").val();
         var algo = $("#algorithmSelect").val();
         sessionStorage.setItem("rows", rows);
-        sessionStorage.setItem("cols", rows);
-        sessionStorage.setItem("algo", algo);      
+        sessionStorage.setItem("cols", cols);
+        sessionStorage.setItem("algo", algo);   
+        return true;
     } 
+    return false;
 }

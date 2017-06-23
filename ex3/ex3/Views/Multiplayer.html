@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>MultiPlayer</title>
@@ -7,15 +8,18 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="../Scripts/jQuery.mazeBoard.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
     <link href="multiPlayer.css" rel="stylesheet" />
     <script src="../Scripts/jquery.signalR-2.2.2.js"></script>
     <script src="../signalr/hubs"></script>
+    <script src="../Scripts/MultiPlayer/MultiPlayer.js"></script>
     <script>
         if (!sessionStorage['name']) {
             window.location.href = "../Views/SignIn.html";
         }
     </script>
 </head>
+
 
 <body>
     <div id="menuBar"> </div>
@@ -25,49 +29,50 @@
             <canvas id="myCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
             <canvas id="oponentCanvas" width="500" height="500" style=" border:1px solid #000000;"></canvas>
         </div>
-        <button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>
+        <!--<button id="btnloading" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Loading...</button>-->
 
         <div id="options">
             <div class="col-xs-2">
-                <div class="form-group">
-                    <h3>Join existing game</h3>
-                    <label for="gameSelect" class="col-2 col-form-label">Games</label>
-                    <div>
-                        <select id="gameSelect" class="selectpicker col-3 col-form-label"></select>
-                    </div>
-                    <br />
-                    <div>
-                        <span class="input-group-btn">
-                            <button id="btnJoin" class="btn btn-primary" type="button" onclick="joinGame()">Join Game</button>
-                        </span>
-                    </div>
+                <form id="multiplayer_arguments">
+                    <div class="form-group">
+                        <h3>Join existing game</h3>
+                        <label for="gameSelect" class="col-2 col-form-label">Games</label>
+                        <div>
+                            <select id="gameSelect" class="selectpicker col-3 col-form-label"></select>
+                        </div>
+                        <br />
+                        <div>
+                            <span class="input-group-btn">
+                                <button id="btnJoin" class="btn btn-primary" type="button" onclick="joinGame()">Join Game</button>
+                            </span>
+                        </div>
 
-                    <h3>Start new game</h3>
-                    <label for="mazeName" class="col-2 col-form-label">Name</label>
-                    <div class="col-10">
-                        <input class="form-control" type="text" value="myMaze" id="mazeName">
-                    </div>
+                        <h3>Start new game</h3>
+                        <label for="mazeName" class="col-2 col-form-label">Name</label>
+                        <div class="col-10">
+                            <input class="form-control" type="text" value="myMaze" name="mazeName" id="mazeName">
+                        </div>
 
-                    <label for="mazeRows" class="col-2 col-form-label">Rows</label>
-                    <div class="col-10">
-                        <input class="form-control" type="number" value="10" id="mazeRows">
-                    </div>
+                        <label for="mazeRows" class="col-2 col-form-label">Rows</label>
+                        <div class="col-10">
+                            <input class="form-control" type="number" value="10" name="mazeRows" id="mazeRows">
+                        </div>
 
-                    <label for="mazeCols" class="col-2 col-form-label">Cols</label>
-                    <div class="col-10">
-                        <input class="form-control" type="number" value="10" id="mazeCols">
-                    </div>
+                        <label for="mazeCols" class="col-2 col-form-label">Cols</label>
+                        <div class="col-10">
+                            <input class="form-control" type="number" value="10" name="mazeCols" id="mazeCols">
+                        </div>
 
-                    <br />
-                    <div>
-                        <span class="input-group-btn">
-                            <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame2()">Start Game</button>
-                        </span>
+                        <br />
+                        <div>
+                            <span class="input-group-btn">
+                                <button id="btnStart" class="btn btn-primary" type="button" onclick="startGame()">Start Game</button>
+                            </span>
+                        </div>
+                        <br />
+                        <button id="btnwaiting" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Waiting for oponent...</button>
                     </div>
-                    <br />
-                    <button id="btnwaiting" class="btn btn-lg btn-warning"><span class="glyphicon-refresh-animate glyphicon glyphicon-refresh"></span> Waiting for oponent...</button>
-                </div>
-
+                </form>
             </div>
         </div>
 
@@ -113,276 +118,6 @@
             }
         }
     </style>
-
-
-    <script>
-        var name_of_maze;
-
-        var messagesHub;
-        //connect to hub
-        (function () {
-            alert("i am here");
-            messagesHub = $.connection.multiPlayerHub;
-            messagesHub.client.oponentMoved = function (direction) {
-                //alert("OPONENT HAS MOVED!");
-                $("#oponentCanvas").oponentMoved(direction);
-            }
-            messagesHub.client.oponentJoined = function (serializedMaze) {
-
-
-                $('#btnJoin').addClass('disabled');
-                $('#btnStart').addClass('disabled');
-                $('#btnwaiting').hide();
-                initialzieBoards(serializedMaze);
-            }
-            
-            //$.connection.hub.start().done(function () {
-            //    messagesHub.server.connect(sessionStorage['name']);
-            //});
-
-        })();
-
-        $(document).keydown(function (e) {
-            var moved = $("#myCanvas").playerMoved(e);
-            var direction;
-            switch (e.which) {
-                case 37: //left
-                    direction = "0";
-                    break;
-                case 38: //up
-                    direction = "2";
-                    break;
-                case 39: //right
-                    direction = "1";
-                    break;
-                case 40: //down
-                    direction = "3";
-                    break;
-            }
-            if (moved) {
-                messagesHub.server.notifyPlayerHasMoved(sessionStorage['name'], name_of_maze, direction);
-            }
-            //$("#oponentCanvas").playerMoved(e);
-            //e.preventDefault(); // prevent the default action (scroll / move caret)
-        });
-
-
-
-        $('#btnJoin').addClass('disabled');
-        $('#btnwaiting').hide();
-        $("#menuBar").load("/Views/UpperMenu.html");
-        var apiuri = "http://localhost:4714/api/MultiPlayer/list";
-        $.get(apiuri).done(function (listJson) {
-            listJson = listJson.slice(1,listJson.length - 1);
-            var array = listJson.split(',');
-            if (array[0] == "") {
-                return;
-            }   
-
-            $('#btnJoin').removeClass('disabled');
-            for (var i = 0; i < array.length; i++) {               
-                var mazeName = array[i].slice(1, array[i].length - 1);
-                $('#gameSelect').append($('<option>', {
-                    value: null,
-                    text: mazeName
-                }));
-            }
-        });
-
-        function startGame2() {
-            $.connection.hub.start().done(function () {
-                alert("user " + sessionStorage['name'] + " has connected.");
-                var mazeName = $("#mazeName").val();
-                messagesHub.server.connect(sessionStorage['name'], mazeName);
-            });
-
-            $('#btnStart').addClass('disabled');
-            var rows = $("#mazeRows").val();
-            var cols = $("#mazeCols").val();
-            var mazeName = $("#mazeName").val();
-            name_of_maze = mazeName;
-            var apiuri = "http://localhost:4714/api/MultiPlayer/start/" + mazeName + "/" + rows +"/"+cols;
-            $.get(apiuri).done(function (solutionJson) {
-                return;
-            });
-            $('#btnwaiting').show();
-        }
-
-        function OponentMoved(direction) {
-            $("#oponentCanvas").oponentMoved(direction);
-        }
-
-        function oponentJoined() {
-
-        }
-
-
-
-        function initialzieBoards(mazeJson) {
-            var mazeString = mazeJson.Maze;
-            $('#btnJoin').addClass('disabled');
-            $('#btnStart').addClass('disabled');
-            //console.log("json: " + mazeString);
-            var startRow = mazeJson.Start.Row;
-            var startCol = mazeJson.Start.Col;
-            var endRow = mazeJson.End.Row;
-            var endCol = mazeJson.End.Col;
-
-            var rows = mazeJson.Rows;
-            var cols = mazeJson.Cols;
-            var mazeArray = new Array(rows);
-            for (var i = 0; i < rows; i++) {
-                mazeArray[i] = new Array(cols);
-            }
-
-            //fill maze board array
-            for (var i = 0; i < rows; i++) {
-                for (var j = 0; j < cols; j++) {
-                    mazeArray[i][j] = 1;
-                    if (mazeString[i * rows + j] == '0') {
-                        mazeArray[i][j] = 0;
-                    }
-                }
-            }
-
-            //update the board
-            var playerImage = "../Views/icon.png";
-            var oponentImage = "../Views/oponentIcon.png";
-            var exitImage = "../Views/arrow.png"
-            var exitImage2 = "../Views/arrow2.png"
-            var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage2);
-            var board = $("#myCanvas").drawMaze();
-            var board2 = $("#oponentCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, oponentImage, exitImage);
-            var board2 = $("#oponentCanvas").drawMaze();
-        }
-
-        function joinGame() {
-            alert("yayyay0");
-            $.connection.hub.start().done(function () {                
-                var mazeToJoin = $("#gameSelect").val();
-                messagesHub.server.connect(sessionStorage['name'], mazeToJoin);
-                name_of_maze = mazeToJoin;
-                var apiuri = "http://localhost:4714/api/MultiPlayer/join/" + mazeToJoin;
-                $.get(apiuri).done(function (mazeJson) {
-                    initialzieBoards(mazeJson);
-                    alert("yayyay1");
-                    alert(mazeToJoin);
-                    messagesHub.server.notifyGameStarted(sessionStorage['name'], mazeToJoin, mazeJson);
-                    alert("yayyay");
-                });
-            });
-
-
-        }
-    </script>
-
-    <script>
-
-        var nameOfMazeGenerated;
-
-        function startGame() {
-                $('#btnStart').addClass('disabled');
-                $('#btnSolve').removeClass('disabled');
-                var rows = $("#mazeRows").val();
-                var cols = $("#mazeCols").val();
-                var mazeName = $("#mazeName").val();
-                nameOfMazeGenerated = mazeName;
-                var apiuri = "http://localhost:4714/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
-                $.post(apiuri).done(function (mazeJson) {
-
-                    //when done load the maze propertieis from the json
-                    var mazeString = mazeJson.Maze;
-
-                    //console.log("json: " + mazeString);
-                    var startRow = mazeJson.Start.Row;
-                    var startCol = mazeJson.Start.Col;
-                    var endRow = mazeJson.End.Row;
-                    var endCol = mazeJson.End.Col;
-
-                    var rows = mazeJson.Rows;
-                    var cols = mazeJson.Cols;
-                    var mazeArray = new Array(rows);
-                    for (var i = 0; i < rows; i++) {
-                        mazeArray[i] = new Array(cols);
-                    }
-
-                    //fill maze board array
-                    for (var i = 0; i < rows; i++) {
-                        for (var j = 0; j < cols; j++) {
-                            mazeArray[i][j] = 1;
-                            if (mazeString[i * rows + j] == '0') {
-                                mazeArray[i][j] = 0;
-                            }
-                        }
-                    }
-
-                    console.log("TEST " + endCol + "  " + endRow);
-                    //update the board
-                    //var board = $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol);
-                    //var board = $("#myCanvas").drawMaze();
-                    console.log(board);
-                });
-            }
-
-
-
-            function myFunction(event) {
-                var x = event.which || event.keyCode;
-                alert(x);
-            }
-
-   
-
-    </script>
-    <script>
-
-            $(document).ready(function () {
-                $('#btnloading').hide();
-
-                $('#btnSolve').addClass('disabled');
-                /*
-                var img = new Image();
-                img.onload = function () {
-                    alert("image is loaded");
-                    $(img).appendTo('body');
-                }
-                //img.src = "http://pierre.chachatelier.fr/programmation/images/mozodojo-original-image.jpg";
-                img.src = "../Views/mazeIcon.png";
-                $.getJSON("http://localhost:4714/api/SinglePlayer").done(function (data) {
-                    console.log(data);
-                })
-                */
-                /*
-                //send asynchronous ajax post request for a maze
-                var apiuri = "http://localhost:4714/api/SinglePlayer/mymaze/15/15"
-                $.post(apiuri).done(function (mazeJson) {
-                    //when done load the maze propertieis from the json
-                    var mazeString = mazeJson.Maze;
-                    console.log("json: " + mazeString);
-                    var rows = mazeJson.Rows;
-                    var cols = mazeJson.Cols;
-                    var mazeArray = new Array(rows);
-                    for (var i = 0; i < rows; i++) {
-                        mazeArray[i] = new Array(cols);
-                    }
-                    //fill maze board array
-                    for (var i = 0; i < rows; i++) {
-                        for (var j = 0; j < cols; j++) {
-                            mazeArray[i][j] = 1;
-                            if (mazeString[i * rows + j] == '0') {
-                                mazeArray[i][j] = 0;
-                            }
-                        }
-                    }
-                    //update the board
-                    $("#myCanvas").mazeBoard(mazeArray);
-                });
-                var maze = [[0, 1, 0, 1, 0], [0, 1, 0, 1, 1], [0, 0, 1, 0, 1], [0, 1, 0, 0, 0]];
-
-           */
-            })
-
-    </script>
 
 
 </body>

@@ -7,12 +7,13 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="Ranking.css" rel="stylesheet" />
+    <script src="../Scripts/Ranking/Ranking.js"></script>
 </head>
 
 <body>
     <div id="menuBar"> </div>
     <h1 id="heading" class="jumbotron"> User Ranking</h1>
-    <img id="loader" src="../Views/Loading_icon.gif">
+    <img id="loader" src="../Views/images/Loading_icon.gif">
     <table id="table" class="table table-hover">
         <thead>
             <tr>
@@ -29,50 +30,3 @@
 </body>
 
 </html>
-
-<script>
-    $("#menuBar").load("/Views/UpperMenu.html");
-    var apiuri = "/api/Users";
-    $("table").hide();
-    $.get(apiuri).done(function (response, status) {
-
-
-        //create users array
-        var users = new Array(response.length);
-        for (var i = 0; i < response.length; i++) {
-            var userName = response[i].UserName;
-            var wins = response[i].Wins;
-            var loses = response[i].Loses;
-            users[i] = { name: userName, won: wins, lost: loses };
-        }
-
-        //sort users
-        users.sort(function (a, b) {
-            var keyA = a['won'] - a['lost'];
-            var keyB = b['won'] - b['lost'];
-            // Compare the 2 keys
-            if (keyA > keyB) return -1;
-            if (keyA < keyB) return 1;
-            return 0;
-        });
-
-        //create table
-        for (var i = 0; i < users.length; i++) {
-            var name = users[i]['name'];
-            var wins = users[i]['won'];
-            var loses = users[i]['lost'];
-            var colorString = "";
-            if (name == sessionStorage['name']) {
-                colorString = ' class="table-active"';
-            }
-            var rank = i + 1;
-            $('#table_body').append("<tr" + colorString + "><th scope='row'>" + rank + "</th><td>" +name +"</td> <td>" + wins + "</td> <td>" + loses + "</td>"+   "</tr>");
-        }
-        $("#loader").hide();
-        $("#table").show();
-
-    }).fail(function (response, status) {
-        alert("not yay");
-        $("loader").hide();
-    });
-</script>

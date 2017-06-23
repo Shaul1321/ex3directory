@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+
+    //style 
     $('#btnSolve').addClass('disabled');
     $("#menuBar").load("/Views/UpperMenu.html");
     $("#myCanvas").hide();
@@ -14,5 +16,27 @@
         $("#mazeCols").val(cols);
         $('#algorithmSelect').val(algo);
     }
+
+    //validation setup
+    var rules = {
+        mazeName: {
+            required: true,
+        },
+        mazeRows: {
+            required: true,
+            number: true,
+            digits: true,
+            range: [2,100]
+        },
+        mazeCols: {
+            required: true,
+            number: true,
+            digits: true,
+            range: [2, 100]
+        }
+    };
+    $('#singlePlayer_arguments').validate({
+        rules: rules
+    })
 
 })

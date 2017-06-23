@@ -1,57 +1,74 @@
 ﻿
 var nameOfMazeGenerated;
-//var mazeBoard;
 
+/**
+ * requests a soltuion from the server, parses the json received and draws it on the board using the plugin.
+ */
 function solveGame() {
+    //collect arguments
     $('#btnSolve').addClass('disabled');
     var algorithm = $("#algorithmSelect").val();
     var algoCode = 0;
     if (algorithm == "DFS") {
         var algoCode = 1;
     }
+
+    //ajax solution request
     var apiuri = "/api/SinglePlayer/" + nameOfMazeGenerated + "/" + algoCode;
     $.get(apiuri).done(function (solutionJson, status) {
         var solutionString = solutionJson.Solution;
+        //fill array
         var solutionArray = new Array(solutionString.length);
         for (var i = 0; i < solutionString.length; i++) {
             solutionArray[i] = solutionString[i];
         }
+        //animate the solution
         var board = $("#myCanvas").solve(solutionArray);
     }).fail(function () {
         alert("No connection to server.");
     });
 }
 
+/**
+ * a callback function that is called by the plugin when the player has won.
+ */
 function hasWon() {
     alert("You have won! Press ok to return to the main page.");
     window.location.href = "../Views/index.html";
 }
 
+/**
+ * send an ajax request for starting a new game, parses the maze json received
+*  and displayes the board
+ */
 
 function startGame() {
-
+   if ($('#singlePlayer_arguments').valid()) {
+    //collect arguments
     var rows = $("#mazeRows").val();
     var cols = $("#mazeCols").val();
     var mazeName = $("#mazeName").val();
-
-    if (rows < 2 || cols < 2 || rows > 100 || cols > 100) {
-        $("#argumentsError").show();
-        return;
-    }
 
     $('#btnStart').addClass('disabled');
     $('#btnSolve').removeClass('disabled');
     $("#loader").show();
     $("#argumentsError").hide();
+
     nameOfMazeGenerated = mazeName;
     document.title = nameOfMazeGenerated;
-    var apiuri = "/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
-    $.post(apiuri).done(function (mazeJson) {
 
+    //ask for a new maze via ajax
+    var apiuri = "/api/SinglePlayer/" + mazeName + "/" + rows + "/" + cols;
+    $.post(apiuri).done(function (mazeJson, status) {
+        if (status !== "success") {
+            return;
+        }
+        $('#mazeRows').prop('disabled', true);
+        $('#mazeCols').prop('disabled', true);
+        $('#mazeName').prop('disabled', true);
         //when done load the maze propertieis from the json
         var mazeString = mazeJson.Maze;
 
-        //console.log("json: " + mazeString);
         var startRow = mazeJson.Start.Row;
         var startCol = mazeJson.Start.Col;
         var endRow = mazeJson.End.Row;
@@ -75,9 +92,9 @@ function startGame() {
         }
 
         //update the board
-        var playerImage = "../Views/icon.png";
-        var exitImage = "../Views/arrow.png"
-        var oponentImage = "../Views/oponentIcon.png";
+        var playerImage = "../Views/images/icon.png";
+        var exitImage = "../Views/images/arrow.png"
+        var oponentImage = "../Views/images/oponentIcon.png";
         $("#myCanvas").initialize(mazeArray, startRow, startCol, endRow, endCol, playerImage, exitImage, hasWon);
         $("#myCanvas").drawMaze();
 
@@ -86,21 +103,17 @@ function startGame() {
         $("#myCanvas").show();
     }).fail(function () {
         alert("No connection to server.");
-    });
+        });
+   }
 }
 
+/**
+ * registers to a arrow-key press event. transfers the event to the plugin in order to handle the player movement.
+ */
 $(document).keydown(function (e) {
     var key = e.which;
     if (key == 37 || key == 38 || key == 39 || key == 40) {
         e.preventDefault();
         $("#myCanvas").playerMoved(e);
     }
-    // prevent the default action (scroll / move caret)
 });
-
-
-
-function myFunction(event) {
-    var x = event.which || event.keyCode;
-    //alert(x);
-}

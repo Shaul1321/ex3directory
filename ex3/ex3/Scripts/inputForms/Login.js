@@ -27,7 +27,6 @@ function logIn() {
         $("#loader").show();
         var apiuri = "/api/Users/Login/" + userName + "/" + password;
         $.get(apiuri).done(function (response, status) {
-            alert("yay");
             sessionStorage.setItem("name", userName);
             window.location.href = "../Views/index.html";
             $("#loader").hide();

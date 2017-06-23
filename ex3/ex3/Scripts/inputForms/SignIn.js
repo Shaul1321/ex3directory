@@ -33,12 +33,6 @@ $(document).ready(function () {
 
 
 
-
-function yay() {
-    alert("hello");
-}
-
-
 function signIn() {
 
     if ($('#signForm').valid()) {

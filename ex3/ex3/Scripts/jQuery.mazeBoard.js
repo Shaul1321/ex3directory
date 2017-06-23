@@ -1,5 +1,4 @@
-﻿
-(function ($) {
+﻿(function ($) {
     // $.fn.drawMaze = function (mazeData, startRow, startCol
     //     , exitRow, exitCol, playerImage, exitImage, enabled, callBack) {
      
@@ -35,25 +34,20 @@
                 //position['col'] = position['col'] - 1;
                 newCol = pos['col'] - 1;
                 break;
-
             case 38: // up
                 //position['row'] = position['row'] - 1;
                 newRow = pos['row'] - 1;
                 break;
-
             case 39: // right
                 //position['col'] = position['col'] + 1;
                 newCol = pos['col'] + 1;
                 break;
-
             case 40: // down
                 //position['row'] = position['row'] + 1;
                 newRow = pos['row'] + 1;
                 break;
-
             default: return; // exit this handler for other keys
         }
-
         if (mazeArray[newRow][newCol] == 0) {
             reDraw();
             $(canvasElement).data("position", { row: newRow, col: newCol });           
@@ -71,7 +65,6 @@
             var pos = $(canvasElement).data("position");
             var newRow = pos['row'];
             var newCol = pos['col'];
-            console.log("A MOVE");
             switch (e.which) {
                 case 37: // left
                     //position['col'] = position['col'] - 1;
@@ -96,18 +89,13 @@
                 default: return; // exit this handler for other keys
             }
 
-            console.log("*****TESTESTEST*****");
-            console.log(newRow);
-            console.log(newCol);
-            console.log(pos['row']);
-            console.log(pos['col']);
-            console.log(mazeArray);
-            console.log("*****TESTESTEST*****");
+
             if (isWithinBoard(newRow, newCol) && mazeArray[newRow][newCol] == 0) {
                 reDraw();
                 $(canvasElement).data("position", { row: newRow, col: newCol });
                 var pos = $(canvasElement).data("position");
                 if (pos['row'] == exitRow && pos['col'] == exitCol) {
+                    var callbackFunction = $(canvasElement).data("callback");
                     callbackFunction();
                 }
                 return true;
@@ -135,7 +123,6 @@
         var img = new Image();
         img.src = $(canvasElement).data("player_icon");
 
-        
 
         var rows = mazeArray.length;
         var cols = mazeArray[0].length;
@@ -188,9 +175,7 @@
     }
 
     $.fn.initialize = function (mazeData, initRow, initCol, finishRow, finishCol, playerImg, exitImg, callback) {
-        console.log("mazeData is " + mazeData);
-        console.log("exit is row:" + finishRow + " col:" + finishCol);
-        console.log("start is row:" + initRow + " col:" + initCol);
+
         mazeArray = mazeData;
         element = $(this)[0];
         canvasElement = element;
@@ -209,14 +194,9 @@
         $(canvasElement).data("canvasContext", context);
         $(canvasElement).data("start", { row: initRow, col: initCol });
         $(canvasElement).data("end", { row: exitRow, col: exitCol });
+        $(canvasElement).data("callback", callback);
         //oponentIcon = oponentImg;
         exitIcon = exitImg;
-
-        //reDraw();
-        callbackFunction = callback;
-        console.log("CANVAS CONTEXT IS " + canvasContext + "AND ELEMENT IS " + canvasElement.id);
-        console.log(this);
-        console.log("TRYTRY " + this);
         //$(canvasElement).keypress(function (e) { handleKeyPress(e) });
         //$(document).on('keypress', this, function (e) { handleKeyPress(e)});
         return this;
@@ -282,6 +262,11 @@
                 break;
         }
         reDraw()
+        var pos = $(canvasElement).data("position");
+        if (pos['row'] == exitRow && pos['col'] == exitCol) {
+            var callbackFunction = $(canvasElement).data("callback");
+            callbackFunction();
+        }
       
     }
 
@@ -290,7 +275,7 @@
         var img = new Image();
         img.src = $(canvasElement).data("player_icon");
         var exitimg = new Image();
-        exitimg.src = "../Views/arrow.png";
+        exitimg.src = "../Views/images/arrow.png";
        
         var rows = mazeArray.length;
         var cols = mazeArray[0].length;

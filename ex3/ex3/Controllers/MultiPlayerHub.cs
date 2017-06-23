@@ -18,8 +18,6 @@ new ConcurrentDictionary<string, string>();
         private static ConcurrentDictionary<string, List<string>> mazeNameToPlayersMapping =
 new ConcurrentDictionary<string, List<string>>();
 
-        private static string player1;
-        private static string player2;
         private static int numPlayers=0;
 
         public void Hello()
