@@ -2,6 +2,10 @@
 
 var messagesHub;
 
+//if the user is not logged in, transfer him to the sign in page.
+if (!sessionStorage['name']) {
+    window.location.href = "../Views/SignIn.html";
+}
 /**
 * register to events in the hub.
 **/
