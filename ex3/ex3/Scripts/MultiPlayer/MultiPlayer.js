@@ -221,7 +221,7 @@ function joinGame() {
     $.connection.hub.start().done(function () {
         var mazeToJoin = $("#gameSelect").val();
         messagesHub.server.connect(sessionStorage['name'], mazeToJoin);
-        var apiuri = "http://localhost:4714/api/MultiPlayer/join/" + mazeToJoin;
+        var apiuri = "/api/MultiPlayer/join/" + mazeToJoin;
         $.get(apiuri).done(function (mazeJson, status) {
             if (status != "success") { return; }
 
