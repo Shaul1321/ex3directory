@@ -31,6 +31,10 @@ function logIn() {
             window.location.href = "../Views/index.html";
             $("#loader").hide();
         }).fail(function (response, status) {
+            if (response.status === 0) { // server offline
+                alert("no connection to server.");
+                return;
+            } //else, wrong name/password
             $("#loader").hide();
             $("#loginErrorMessage").show();
         });

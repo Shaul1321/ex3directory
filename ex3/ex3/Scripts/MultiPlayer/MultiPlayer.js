@@ -6,6 +6,7 @@ var messagesHub;
 if (!sessionStorage['name']) {
     window.location.href = "../Views/SignIn.html";
 }
+else{
 /**
 * register to events in the hub.
 **/
@@ -19,7 +20,10 @@ if (!sessionStorage['name']) {
         $('#btnStart').addClass('disabled');
         $('#btnwaiting').hide();
         initialzieBoards(serializedMaze);
-    }
+    };
+    //messagesHub.disconnect(function () {
+    //    alert('Server has disconnected');
+    //});
 })();
 
 /***
@@ -45,7 +49,7 @@ $(document).keydown(function (e) {
     }
     if (moved) {
         var mazeName = $("#mazeName").val();
-        messagesHub.server.notifyPlayerHasMoved(sessionStorage['name'], mazeName, direction);
+        messagesHub.server.notifyPlayerHasMoved(sessionStorage['name'], mazeName, direction).fail(function () {alert("no connection to server." )});;
     }
 
 });
@@ -55,6 +59,7 @@ $(document).keydown(function (e) {
 * validation setup
 **/
 $(document).ready(function () {
+
     //validation setup
     var rules = {
         mazeName: {
@@ -86,24 +91,28 @@ $(document).ready(function () {
     $("#menuBar").load("../../Views/UpperMenu.html");
 
     //ask for a list of available mazes
-    var apiuri = "http://localhost:4714/api/MultiPlayer/list";
-    $.get(apiuri).done(function (listJson) {
-        listJson = listJson.slice(1, listJson.length - 1);
-        var array = listJson.split(',');
-        if (array[0] == "") {
-            return;
-        }
+    var apiuri = "/api/MultiPlayer/list";
+    $.get(apiuri).done(function (listJson, status) {
+        if (status == "success") {
+            listJson = listJson.slice(1, listJson.length - 1);
+            var array = listJson.split(',');
+            if (array[0] == "") {
+                return;
+            }
 
-        $('#btnJoin').removeClass('disabled');
-        //dyamically add the maze names to the select element
-        for (var i = 0; i < array.length; i++) {
-            var mazeName = array[i].slice(1, array[i].length - 1);
-            $('#gameSelect').append($('<option>', {
-                value: null,
-                text: mazeName
-            }));
+
+            $('#btnJoin').removeClass('disabled');
+            //dyamically add the maze names to the select element
+            for (var i = 0; i < array.length; i++) {
+                var mazeName = array[i].slice(1, array[i].length - 1);
+                $('#gameSelect').append($('<option>', {
+                    value: null,
+                    text: mazeName
+                }));
+            }
         }
-    });
+    }).fail(function () { alert("no connection to server") });
+
 })
 
 /**
@@ -141,7 +150,7 @@ function startGame() {
         $.connection.hub.start().done(function () {
             var mazeName = $("#mazeName").val();
             messagesHub.server.connect(sessionStorage['name'], mazeName);
-        });
+        }).fail(function () {alert("server is down. Could not connect.")});
 
         //style
         $('#btnStart').addClass('disabled');
@@ -156,9 +165,9 @@ function startGame() {
 
         //asks for a new multiplayer game
         var apiuri = "/api/MultiPlayer/start/" + mazeName + "/" + rows + "/" + cols;
-        $.get(apiuri).done(function (solutionJson) {
+        $.get(apiuri).done(function (solutionJson, status) {
             return;
-        });
+        }).fail(function () { alert("no connection to server") });
         $('#btnwaiting').show();
     }
 }
@@ -236,6 +245,5 @@ function joinGame() {
             messagesHub.server.notifyGameStarted(sessionStorage['name'], mazeToJoin, mazeJson);
         });
     }).fail(function(){alert("connection error")})
-
-
+ }
 }

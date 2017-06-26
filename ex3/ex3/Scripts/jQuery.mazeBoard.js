@@ -237,6 +237,8 @@
         if (animationIndex == solutionArray.length) {
             clearInterval(timer)
             movementAllowed = true;
+            var callbackFunction = $(canvasElement).data("callback");
+            callbackFunction();
         }
     }
 

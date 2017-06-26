@@ -41,9 +41,10 @@ namespace ex3.Controllers
         /// <param name="cols"></param>
         [Route("api/MultiPlayer/start/{name}/{rows}/{cols}")]
         [HttpGet]
-        public void StartGame(string name, int rows, int cols)
+        public IHttpActionResult StartGame(string name, int rows, int cols)
         {
             mazeModel.StartGame(name, rows, cols);
+            return Ok();
         }
 
         /// <summary>

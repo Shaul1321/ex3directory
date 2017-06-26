@@ -55,6 +55,10 @@ function signIn() {
             window.location.href = "../Views/index.html";
             $("#loader").hide();
         }).fail(function (response, status) {
+            if (response.status === 0) { //server offline
+                alert("server is offline.");
+                return;
+            } //else, user already exists
             $("#loader").hide();
             $("#userAlreadyExist").show();
         });
